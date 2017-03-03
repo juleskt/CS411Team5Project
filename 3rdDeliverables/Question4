@@ -1,1 +1,9 @@
+For this project, we are going to use python with the Django framework. Since Django is backed in python, we have the support of
+a large community through Python and implicitly, Django. All of our members have familiarity with Python so we would avoid the need
+of learning new syntax (for the most part) and be able to spin up iterative prototypes relatively quickly. Additionally, Python as
+a language is OOP, well-documented, and has amazing built in asbtraction and frameworks. Architecturally, Django itself supports a 
+very crisp MVC layout, scales well, and has inherit security bolstering in its design (to help developers who commonly make OWASP 
+top 10 mistakes). Seeing how the project will be interactive, dynamic, and complex a full framework like Django will much more 
+useful.
 
+Comparing Django/Python to CakePHP/PHP, Django's documentation is far superior to PHP/cakePHP. Looking at PHP as a language, internal framework naming and calling conventions are not standardized, making the use of common functions extremely frustrating. CakePHP has been slow to keep up with newer PHP versions and mannerisms, so it tends to keep all the bad parts of the old PHP ways.

@@ -1,3 +1,25 @@
-lolol
+CS 411 Happy Path of User Story 5:
+First Step:
+User clicks on their saved recipes and it will bring up a list of all of the recipes that the user has saved in the user database.
 
-lool
+Second Step:
+User clicks on the recipe that they wish to prepare and the app will pull up a recipe with all the ingredients needed for that recipe.
+
+Third Step:
+The user then clicks on all of the ingredients that they need to purchase and the app will display the top five options on Amazon for each ingredient that is needed.
+
+Fourth Step:
+The user chooses the option for each ingredient from Amazon and it adds that ingredient to the cart.
+
+Fifth Step:
+The user will be directed to Amazon to checkout their purchase.
+                                                                                                                                                                 
+What Could Go Wrong?
+
+One of the ingredients does not exist on the Amazon website. In this case we will display a message saying it does not exist on the website. In this case the user either choose to buy the rest of the ingredients or choose another recipe.
+
+There are no saved recipes in the user database, in which case the app will display a message stating that the user does not have any saved recipes. In this case the user will have to search for recipes.
+
+The user is not satsified with the top five choices provided by Amazon in which case the user can either omit that ingredient or pull up the next five options provided by Amazon.
+
+The user accidentally adds an item to the cart. In this case they can remove that item when they check out in the final step.

@@ -6,4 +6,7 @@ very crisp MVC layout, scales well, and has inherit security bolstering in its d
 top 10 mistakes). Seeing how the project will be interactive, dynamic, and complex a full framework like Django will much more 
 useful.
 
-Comparing Django/Python to CakePHP/PHP, Django's documentation is far superior to PHP/cakePHP. Looking at PHP as a language, internal framework naming and calling conventions are not standardized, making the use of common functions extremely frustrating. CakePHP has been slow to keep up with newer PHP versions and mannerisms, so it tends to keep all the bad parts of the old PHP ways. Input sanitization in PHP is not too clean and may lead to some security flaws.
+Comparing Django/Python to CakePHP/PHP, Django's documentation is far superior to PHP/cakePHP. Looking at PHP as a language, 
+internal framework naming and calling conventions are not standardized, making the use of common functions extremely frustrating. 
+CakePHP has been slow to keep up with newer PHP versions and mannerisms, so it tends to keep all the bad parts of the old PHP ways.
+Input sanitization in PHP is not too clean and may lead to some security flaws.

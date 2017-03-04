@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'MealBoxV1.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'MyDatabase'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': SecretConfigs.postgressqlDB(),
+        'USER': SecretConfigs.postgressqlUser(),
+        'PASSWORD': SecretConfigs.postgresqlPW(),
+        'HOST': SecretConfigs.postgressqlHost(),
+        'PORT': SecretConfigs.postgressqlPort()
     }
 }
 

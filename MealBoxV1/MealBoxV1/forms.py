@@ -14,3 +14,7 @@ class ContactForm(forms.Form):
 
 class SearchForm(forms.Form):
   search = forms.CharField(required=True)
+
+
+class SearchResult(forms.Form):
+  output = forms.CharField(max_length=None)

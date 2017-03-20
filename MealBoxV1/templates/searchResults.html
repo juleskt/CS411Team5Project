@@ -6,7 +6,11 @@
 </head>
 <body>
 
-{{ form }}
+<ul>
+{% for obj in objects %}
+    <li>{{ obj.title }} - {{obj.source_url}}</li>
+{% endfor %}
+</ul>
 
 </body>
 </html>

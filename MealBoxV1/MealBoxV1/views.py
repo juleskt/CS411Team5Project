@@ -23,9 +23,10 @@ def search(request):
       print (form)
       # redirect to a new URL:
       r = requests.get('http://food2fork.com/api/search?key=86772c825c96cede81e423059eeac87f&q=' + str(request.POST.get('search', None)))
-      html = r.text
-      return HttpResponse(html)
-    #  return render(request, 'search.html', {'form': form})
+      #decodedData = json.load(r.json())
+      #print (r.text)
+      #return HttpResponse(html)
+      return render(request, 'searchResults.html', {'objects': r.json()['recipes']})
 
   # if a GET (or any other method) we'll create a blank form
   else:

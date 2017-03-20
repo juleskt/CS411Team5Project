@@ -2,6 +2,8 @@
 from .forms import ContactForm, SearchForm, SearchResult
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
+import requests
+import json
 
 # add to your views
 def contact(request):
@@ -20,7 +22,8 @@ def search(request):
       # process the data in form.cleaned_data as required
       print (form)
       # redirect to a new URL:
-      html = ("<Hi>%s</Hi>", request.POST.get('search', None))
+      r = requests.get('http://food2fork.com/api/search?key=86772c825c96cede81e423059eeac87f&q=' + str(request.POST.get('search', None)))
+      html = r.text
       return HttpResponse(html)
     #  return render(request, 'search.html', {'form': form})
 
@@ -29,3 +32,8 @@ def search(request):
     form = SearchForm()
 
   return render(request, 'search.html', {'form': form})
+
+#class RecipesPage(generic.TemplateView):
+#    def get(self,request):
+#        recipes_list = services.getrecipes(request)
+#        return render(request,'search.html',recipes_list)

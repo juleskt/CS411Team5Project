@@ -1,4 +1,5 @@
 *.pyc
+*iml
 /3rdDeliverables/.DS_STORE
 .DS_STORE
 /MealBoxV1/SecretConfigs.py

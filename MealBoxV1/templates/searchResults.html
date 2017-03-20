@@ -6,11 +6,13 @@
 </head>
 <body>
 
-<ul>
-{% for obj in objects %}
-    <li>{{ obj.title }} - {{obj.source_url}}</li>
-{% endfor %}
-</ul>
+
+    <p>Results for {{ searchString }}</p>
+    <ul>
+    {% for obj in objects %}
+        <li>{{ obj.title }} - <a href="{{obj.source_url}}">{{ obj.source_url }}</a> </li>
+    {% endfor %}
+    </ul>
 
 </body>
 </html>

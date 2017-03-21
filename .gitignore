@@ -16,6 +16,7 @@
 .idea/modules.xml
 .idea/*
 CS411Team5Project/.idea/*
+CS411Team5Project/MealBoxV1/.idea/*
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/

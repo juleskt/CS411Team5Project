@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import json
-
+from SecretConfigs import *
 
 # add to your views
 def contact(request):
@@ -19,7 +19,7 @@ def search(request):
         # Grab the search string by keyword from POST as defined in forms.py
         searchString = str(request.POST.get('search', None))
         # redirect to a new URL:
-        r = requests.get('http://food2fork.com/api/search?key=86772c825c96cede81e423059eeac87f&q=' + searchString)
+        r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
         # Serialize data for the searchResults.html template
         print(r.json())
         return render(request, 'searchResults.html', {'objects': r.json()['recipes'], 'searchString': searchString})

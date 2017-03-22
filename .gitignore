@@ -16,9 +16,11 @@ SecretConfigs.py
 .idea/misc.xml
 .idea/modules.xml
 .idea/*
+.idea/inspectionProfiles/profiles_settings.xml
 CS411Team5Project/.idea/*
 CS411Team5Project/MealBoxV1/.idea/*
 MealBoxV1/.idea*
+*xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/

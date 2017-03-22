@@ -8,7 +8,6 @@ import json
 # add to your views
 def contact(request):
     form_class = ContactForm
-
     return render(request, 'search.html', {'form': form_class,})
 
 # Belongs to the search page

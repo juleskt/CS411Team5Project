@@ -5,11 +5,13 @@ from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import json
 
+
 # add to your views
 def contact(request):
     form_class = ContactForm
 
     return render(request, 'search.html', {'form': form_class,})
+
 
 # Belongs to the search page
 def search(request):
@@ -28,8 +30,3 @@ def search(request):
         form = SearchForm()
 
     return render(request, 'search.html', {'form': form})
-
-#class RecipesPage(generic.TemplateView):
-#    def get(self,request):
-#        recipes_list = services.getrecipes(request)
-#        return render(request,'search.html',recipes_list)

@@ -21,7 +21,7 @@ def search(request):
         # redirect to a new URL:
         r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
         # Serialize data for the searchResults.html template
-         print(r.json())
+        print(r.json())
         return render(request, 'searchResults.html', {'objects': r.json()['recipes'], 'searchString': searchString})
 
     # if a GET (or any other method) we'll create a blank form

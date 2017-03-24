@@ -2,39 +2,27 @@
 {% load staticfiles %}
 <html lang="en">
 <head>
-<<<<<<< Updated upstream
     <p><b>Welcome to MealBox! Type in your desired meal below.</b></p>
 </head>
-<body>
-<meta charset="UTF-8">
-    <title>Search</title>
-=======
 
+<meta charset="UTF-8">
+<title>Search</title>
 <link rel="stylesheet" type="text/css" href="{% static 'css/searchstyle.css' %}">
 
-
-</head>
-
 <body>
-
-    <p> <img src="{% static 'img/logo.png' %}" style = 'width: 250px; height:100px; position: absolute; top:250px; left: 250px'>
+    <p>
+        <img src="{% static 'img/logo.png' %}" style = 'width: 250px; height:100px; position: absolute; top:250px; left: 250px'>
     </p>
 
 
     <meta charset="UTF-8">
->>>>>>> Stashed changes
-
     <title >What would you like to make?</title>
 
     <form style = 'width:400px; height:100px' action="/search/" method="post">
-    {% csrf_token %}
-    {{ form }}
-<<<<<<< Updated upstream
-    <input type="submit" name="searchField"/>
-=======
-    <input type="submit" name="searchField" value = 'Search Recipe'/>
-
->>>>>>> Stashed changes
-</form>
+        {% csrf_token %}
+            {{ form }}
+        <input type="submit" name="searchField" value = 'Search Recipe'/>
+    </form>
 </body>
+
 </html>

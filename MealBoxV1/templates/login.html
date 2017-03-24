@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
 </head>
 <body>
 
@@ -33,7 +33,7 @@
     <script type="text/javascript">
         document.getElementById('LoginWithAmazon').onclick = function() {
             options = { scope : 'profile' };
-            amazon.Login.authorize(options, 'http://localhost:8000/login.html');
+            amazon.Login.authorize(options, 'http://localhost:8000');
             return false;
         };
     </script>

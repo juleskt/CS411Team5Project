@@ -123,3 +123,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#STATIC_ROOT = '/Users/akeelah/PycharmProjects/CS411Team5Project/MealBoxV1/static/static_root'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
+
+#ct/MealBoxV1/static/static_dirs')STATICFILES_DIRS = ('/Users/akeelah/PycharmProjects/CS411Team5Proje
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static', 'static_dirs'),)

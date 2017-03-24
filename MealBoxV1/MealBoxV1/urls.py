@@ -17,8 +17,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from . import views
 from Search import views as SearchViews
+from Login import views as LoginViews
 
-urlpatterns = [
+urlpatterns = [url(r'^$', LoginViews.index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^contact/$', SearchViews.contact, name='contact'),
     url(r'^search/$', SearchViews.search, name='search'),

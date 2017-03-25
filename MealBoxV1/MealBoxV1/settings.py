@@ -80,17 +80,23 @@ WSGI_APPLICATION = 'MealBoxV1.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': SecretConfigs.postgressqlDB(),
-        'USER': SecretConfigs.postgressqlUser(),
-        'PASSWORD': SecretConfigs.postgresqlPW(),
-        'HOST': SecretConfigs.postgressqlHost(),
-        'PORT': SecretConfigs.postgressqlPort()
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': SecretConfigs.postgressqlDB(),
+#         'USER': SecretConfigs.postgressqlUser(),
+#         'PASSWORD': SecretConfigs.postgresqlPW(),
+#         'HOST': SecretConfigs.postgressqlHost(),
+#         'PORT': SecretConfigs.postgressqlPort()
+#     }
+# }
 
+DATABASE = {
+    'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'MealBoxDB',
+        }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

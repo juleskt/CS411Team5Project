@@ -33,7 +33,7 @@
     <script type="text/javascript">
         document.getElementById('LoginWithAmazon').onclick = function() {
             options = { scope : 'profile' };
-            amazon.Login.authorize(options, 'https://localhost:8000/handleLogin');
+            amazon.Login.authorize(options, 'https://mealbox.pythonanywhere.com/handleLogin');
             return false;
         };
     </script>

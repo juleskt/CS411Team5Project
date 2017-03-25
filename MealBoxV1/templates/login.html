@@ -33,7 +33,7 @@
     <script type="text/javascript">
         document.getElementById('LoginWithAmazon').onclick = function() {
             options = { scope : 'profile' };
-            amazon.Login.authorize(options, 'http://localhost:8000');
+            amazon.Login.authorize(options, 'https://localhost:8000/handleLogin');
             return false;
         };
     </script>

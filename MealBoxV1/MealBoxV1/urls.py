@@ -19,7 +19,9 @@ from . import views
 from Search import views as SearchViews
 from Login import views as LoginViews
 
-urlpatterns = [url(r'^$', LoginViews.index, name='index'),
+urlpatterns = [
+    url(r'^$', LoginViews.index, name='index'),
+    url(r'^handleLogin/$', LoginViews.handleLogin, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^contact/$', SearchViews.contact, name='contact'),
     url(r'^search/$', SearchViews.search, name='search'),

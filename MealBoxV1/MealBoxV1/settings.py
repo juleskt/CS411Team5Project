@@ -145,3 +145,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
 
 #ct/MealBoxV1/static/static_dirs')STATICFILES_DIRS = ('/Users/akeelah/PycharmProjects/CS411Team5Proje
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static', 'static_dirs'),)
+
+SECURE_SSL_REDIRECT = True

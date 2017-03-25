@@ -91,11 +91,15 @@ WSGI_APPLICATION = 'MealBoxV1.wsgi.application'
 #     }
 # }
 
-DATABASE = {
+DATABASES = {
     'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'MealBoxDB',
-        }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': SecretConfigs.mySqlName(),
+        'USER': SecretConfigs.mySqlUser(),
+        'PASSWORD': SecretConfigs.mySqlPW(),
+        'HOST': SecretConfigs.mySqlHost(),   # Or an IP Address that your DB is hosted on
+  #      'PORT': '3306',
+    }
 }
 
 # Password validation

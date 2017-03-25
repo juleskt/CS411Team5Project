@@ -28,4 +28,4 @@ def search(request):
     else:
         form = SearchForm()
 
-    return render(request, 'search.html', {'form': form})
+    return render(request, 'search.html', {'form': form, 'name': request.session['user']['name']})

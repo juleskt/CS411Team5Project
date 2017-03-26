@@ -1,6 +1,6 @@
 # add to the top
 from .forms import ContactForm, SearchForm, SearchResult
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import json
@@ -26,6 +26,10 @@ def search(request):
 
     # if a GET (or any other method) we'll create a blank form
     else:
+        # If the user has not logged in yet (cookie doesn't exist or we don't have a user session)
+        if request.COOKIES.get('amazon_Login_state_cache', 'none') is 'none' or request.session.get('user') is None:
+            return redirect('index')
+
         form = SearchForm()
 
     return render(request, 'search.html', {'form': form, 'name': request.session['user']['name']})

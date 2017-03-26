@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from . import views
 from Search import views as SearchViews
 from Login import views as LoginViews
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^$', LoginViews.index, name='index'),
@@ -26,4 +27,4 @@ urlpatterns = [
     url(r'^contact/$', SearchViews.contact, name='contact'),
     url(r'^search/$', SearchViews.search, name='search'),
     url(r'^search-result/$', SearchViews.search, name='search-result'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

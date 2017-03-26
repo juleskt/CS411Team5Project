@@ -3,6 +3,23 @@
 <html lang="en">
 <head>
     <font color="white">Hi, {{ name }}! Welcome to MealBox. Type in your desired meal below.</font>
+
+    <div style="float: right">
+         <a href="#" id="Logout">
+            <img
+                border="0" alt="Logout"
+                src="http://www.clker.com/cliparts/H/1/c/C/6/F/gray-login-thin-button-hi.png"
+                width="156" height="32"
+            />
+        </a>
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById('Logout').onclick = function() {
+          amazon.Login.logout();
+        };
+    </script>
+
     <meta charset="UTF-8">
     <title>Search</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/searchstyle.css' %}">
@@ -21,6 +38,7 @@
             {{ form }}
         <input type="submit" name="searchField" value = 'Search Recipe'/>
     </form>
+
 </body>
 
 </html>

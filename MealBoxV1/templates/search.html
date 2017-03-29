@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 {% load static %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
 <html lang="en">
 <meta charset="UTF-8">
 <head>
-
-    {# Load the tag library #}
-    {% load bootstrap3 %}
-
-    {# Load CSS and JavaScript #}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-
-    {# Display django.contrib.messages as Bootstrap alerts #}
-    {% bootstrap_messages %}
 
     <font color="white">Hi, {{ name }}! Welcome to MealBox. Type in your desired meal below.</font>
 
@@ -61,7 +55,7 @@
         {% csrf_token %}
             {{ form }}
         <button type="submit" name="searchField" value ='Search Recipe'>
-            {% bootstrap_icon "star" %} Search Recipe
+             Search Recipe
         </button>
     </form>
 

@@ -20,7 +20,17 @@
     <p>Results for {{ searchString }}</p>
     <ul>
     {% for obj in objects %}
-        <li>{{ obj.title }} - <a href="{{obj.source_url}}">{{ obj.source_url }}</a> </li>
+        
+        <div style='margin-bottom: 10px'>
+            <img
+                border="1"
+                src={{obj.image_url}}
+                width="250" height="150"
+            />
+            
+            <a href="{{obj.source_url}}">{{ obj.title }}</a> 
+        </div>
+
     {% endfor %}
     </ul>
 

@@ -27,7 +27,11 @@ def search(request):
         for search in SearchModel.objects.raw(
             """
                 SELECT
-                    *
+                    search_id     as SearchID,
+                    search_term   as searchTerm,
+                    data_response as dataResponse,
+                    page_num      as pageNum,
+                    date_cached   as dateCached
                 FROM
                   mealbox$MealBoxDB.searchCache_tbl
                 WHERE

@@ -33,8 +33,22 @@
     <script type="text/javascript">
         document.getElementById('LoginWithAmazon').onclick = function() {
             options = { scope : 'profile' };
-            amazon.Login.authorize(options, 'https://localhost:8000/handleLogin');
+            amazon.Login.authorize(options, 'https://mealbox.pythonanywhere.com/handleLogin');
             return false;
+        };
+    </script>
+
+    <a href="#" id="Logout">
+        <img
+            border="0" alt="Logout"
+            src="http://www.clker.com/cliparts/H/1/c/C/6/F/gray-login-thin-button-hi.png"
+            width="156" height="32"
+        />
+    </a>
+
+    <script type="text/javascript">
+        document.getElementById('Logout').onclick = function() {
+          amazon.Login.logout();
         };
     </script>
 

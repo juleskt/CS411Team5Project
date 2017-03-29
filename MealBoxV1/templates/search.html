@@ -78,7 +78,7 @@
         <img src="{% static 'img/logo.png' %}" style = 'width: 250px; height:100px; position: absolute; top:250px; left: 250px'>
     </p>
 
-    <form style = 'width:400px; height:100px'; action="/search/" method="post">
+    <form style = 'width:400px; height:100px; margin-top: 70px'; action="/search/" method="post">
         {% csrf_token %}
             {{ form }}
         <button type="submit" name="searchField" value ='Search Recipe'>

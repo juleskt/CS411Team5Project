@@ -12,3 +12,4 @@ requests==2.13.0
 setuptools==34.3.3
 six==1.10.0
 wheel==0.29.0
+django-bootstrap3>=0.0

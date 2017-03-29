@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <head>
 
+    {# Load the tag library #}
+    {% load bootstrap3 %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
     <font color="white">Hi, {{ name }}! Welcome to MealBox. Type in your desired meal below.</font>
 
      <div id="amazon-root"></div>
@@ -50,7 +60,9 @@
     <form style = 'width:400px; height:100px'; action="/search/" method="post">
         {% csrf_token %}
             {{ form }}
-        <input type="submit" name="searchField" value = 'Search Recipe'/>
+        <button type="submit" name="searchField" value ='Search Recipe'>
+            {% bootstrap_icon "star" %} Search Recipe
+        </button>
     </form>
 
 </body>

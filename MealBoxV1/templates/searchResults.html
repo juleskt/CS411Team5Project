@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Search Results!</title>
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
     {% load static %}
 
     {# Load the tag library #}
@@ -73,10 +75,25 @@
                         <h5>Social Rank: {{ obj.social_rank}}</h5>
                     </div>
 
-                    <div>
-                        Add to:
-                        <button type="button" class="btn btn-primary btn-sm">Recipies</button>
-                        <button type="button" class="btn btn-primary btn-sm">Meals</button> 
+                    <div style='display: inline-block'>
+                        <div style='float: left'> 
+                            Add to:
+                            <button type="button" class="btn btn-primary btn-sm">Recipies</button>
+                            <button type'button' class='btn btn-primary btn-sm'>Shopping List</button>
+                        </div>
+
+                        <div class='dropup inline' style='float: left; margin-left:4px;'>
+                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                Meals
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Thanksgiving</a></li>
+                                <li><a href="#">Birthday</a></li>
+                                <li><a href="#">RandomHoliday</a></li>
+                            </ul>                 
+                        </div>
+
                     </div>
 
                 </div>

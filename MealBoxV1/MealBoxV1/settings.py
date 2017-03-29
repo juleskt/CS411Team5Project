@@ -148,3 +148,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static', 'static_dirs'),)
 
 SECURE_SSL_REDIRECT = True
+

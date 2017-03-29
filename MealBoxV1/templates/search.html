@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 {% load static %}
-{% load bootstrap3 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-{% bootstrap_messages %}
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    {% load static %}
+
+    {# Load the tag library #}
+    {% load bootstrap3 %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
 <html lang="en">
 <meta charset="UTF-8">
 <head>
+
+    <div style='position:fixed; top: 0; width: 100%'>
+        <div class="navbar navbar-inverse" id="myNavbar">
+            <div class="navbar-header">
+                <a href=''><img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px;'></a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li><a href='#'>Meals</a></li>
+                <li><a href='#'>Recipes</a></li>
+                <li><a href='#'>Shopping Lists</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            </ul>
+        </div>
+    </div>
 
     <font color="white">Hi, {{ name }}! Welcome to MealBox. Type in your desired meal below.</font>
 

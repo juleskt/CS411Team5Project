@@ -21,9 +21,9 @@ def search(request):
         # Grab the search string by keyword from POST as defined in forms.py
         searchString = str(request.POST.get('search', None))
         # redirect to a new URL:
-#        r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
+      #  r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
         # Serialize data for the searchResults.html template
- #       print(r.json())
+      #  print(r.json())
         return render(request, 'searchResults.html', {'objects': dummyQuery['recipes'], 'searchString': searchString})
 
     # if a GET (or any other method) we'll create a blank form

@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Search Results!</title>
-</head>
-<body background-color=#D3D3D3; style='padding-bottom: 50px'>
 
     {# Load the tag library #}
     {% load bootstrap3 %}
@@ -15,6 +13,24 @@
 
     {# Display django.contrib.messages as Bootstrap alerts #}
     {% bootstrap_messages %}
+
+</head>
+<body background-color=#D3D3D3; style='padding-bottom: 50px'>
+
+
+    <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            <li><a href={% url 'Search.views.index' %}>Home</a></li>
+            <li class='active'><a href="/members/">Members</a></li>
+            <li><a href="#">Research</a></li> 
+            <li><a href="#">Publications</a></li>
+            <li><a href="#">Links</a></li>  
+        </ul>
+        
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+    </div>
 
     <div style='margin-bottom:15px; margin-top: 20px'>
         <h1 class='title' style='width: 800px; margin: 0 auto'>

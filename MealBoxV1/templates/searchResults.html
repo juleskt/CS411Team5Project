@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Search Results!</title>
 
+    {% load static %}
+
     {# Load the tag library #}
     {% load bootstrap3 %}
 
@@ -17,22 +19,25 @@
 </head>
 <body background-color=#D3D3D3; style='padding-bottom: 50px'>
 
+    <div style='position:fixed; top: 0; width: 100%'>
+    <div class="navbar navbar-inverse" id="myNavbar">
+        <div class="navbar-header">
+            <a href=''><img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px;'></a> 
+        </div>
 
-    <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-            <li><a href={% url 'Search.views.index' %}>Home</a></li>
-            <li class='active'><a href="/members/">Members</a></li>
-            <li><a href="#">Research</a></li> 
-            <li><a href="#">Publications</a></li>
-            <li><a href="#">Links</a></li>  
+            <li><a href='#'>Meals</a></li>
+            <li><a href='#'>Recipes</a></li> 
+            <li><a href='#'>Shopping Lists</a></li> 
         </ul>
         
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
         </ul>
     </div>
+    </div>
 
-    <div style='margin-bottom:15px; margin-top: 20px'>
+    <div style='margin-bottom:15px; margin-top: 75px'>
         <h1 class='title' style='width: 800px; margin: 0 auto'>
             Results for {{ searchString }}:
         </h1>

@@ -21,10 +21,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    url(r'^$', LoginViews.index, name='index'),
-    url(r'^handleLogin/$', LoginViews.handleLogin),
+    url(r'^', LoginViews.index, name='index'),
+    url(r'^handleLogin/', LoginViews.handleLogin),
     url(r'^admin/', admin.site.urls),
-    url(r'^contact/$', SearchViews.contact, name='contact'),
-    url(r'^search/$', SearchViews.search, name='search'),
-    url(r'^search-result/$', SearchViews.search, name='search-result'),
+    url(r'^contact/', SearchViews.contact, name='contact'),
+    url(r'^search/', SearchViews.search, name='search'),
+    url(r'^search-result/', SearchViews.search, name='search-result'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

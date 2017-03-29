@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import json
 from SecretConfigs import *
+from django.db import connections
+from .models import *
 
 # add to your views
 def contact(request):
@@ -20,6 +22,19 @@ def search(request):
     if request.method == 'POST':
         # Grab the search string by keyword from POST as defined in forms.py
         searchString = str(request.POST.get('search', None))
+        print(searchString)
+
+        for search in SearchModel.objects.raw(
+            """
+                SELECT
+                    *
+                FROM
+                  mealbox$MealBoxDB.searchCache_tbl
+                WHERE
+                  searchTerm = %s """, [searchString]
+        ):
+            print(search)
+
         # redirect to a new URL:
         #r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
         # Serialize data for the searchResults.html template

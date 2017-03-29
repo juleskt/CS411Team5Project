@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    {% url 'index' as index %}
+    {% url 'search' as search %}
+
+    <ul id="nav">
+        <li>{% block nav-home %}<a href="{% url index %}">Home</a>{% endblock %}</li>
+        <li>{% block nav-about %}<a href="{% url search %}">Search</a>{% endblock %}</li>
+    </ul>
+
+</body>
+</html>

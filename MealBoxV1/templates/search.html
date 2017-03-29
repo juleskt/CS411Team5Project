@@ -1,8 +1,73 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    {% load static %}
+
+    {# Load the tag library #}
+    {% load bootstrap3 %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
 <html lang="en">
+<meta charset="UTF-8">
 <head>
-    <p><b>Welcome to MealBox! Type in your desired meal below.</b></p>
+
+    <div style='position:fixed; top: 0; width: 100%'>
+        <div class="navbar navbar-inverse" id="myNavbar">
+            <div class="navbar-header">
+                <a href=''><img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px;'></a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li><a href='#'>Meals</a></li>
+                <li><a href='#'>Recipes</a></li>
+                <li><a href='#'>Shopping Lists</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <font color="white">Hi, {{ name }}! Welcome to MealBox. Type in your desired meal below.</font>
+
+     <div id="amazon-root"></div>
+     <script type="text/javascript">
+
+        window.onAmazonLoginReady = function() {
+            amazon.Login.setClientId('amzn1.application-oa2-client.3841a328796f48d48add98af3e1bd6fa');
+        };
+
+        (function(d) {
+            var a = d.createElement('script'); a.type = 'text/javascript';
+            a.async = true; a.id = 'amazon-login-sdk';
+            a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+            d.getElementById('amazon-root').appendChild(a);
+        }) (document);
+    </script>
+
+    <div style="float: right">
+         <a id="Logout" href="https://mealbox.pythonanywhere.com">
+            <img
+                border="0" alt="Logout"
+                src="http://www.clker.com/cliparts/H/1/c/C/6/F/gray-login-thin-button-hi.png"
+                width="156" height="32"
+            />
+        </a>
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById('Logout').onclick = function() {
+          amazon.Login.logout();
+        };
+    </script>
+
     <meta charset="UTF-8">
     <title>Search</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/searchstyle.css' %}">
@@ -13,14 +78,14 @@
         <img src="{% static 'img/logo.png' %}" style = 'width: 250px; height:100px; position: absolute; top:250px; left: 250px'>
     </p>
 
-    <meta charset="UTF-8">
-    <title >What would you like to make?</title>
-
-    <form style = 'width:400px; height:100px' action="/search/" method="post">
+    <form style = 'width:400px; height:100px'; action="/search/" method="post">
         {% csrf_token %}
             {{ form }}
-        <input type="submit" name="searchField" value = 'Search Recipe'/>
+        <button type="submit" name="searchField" value ='Search Recipe'>
+             Search Recipe
+        </button>
     </form>
+
 </body>
 
 </html>

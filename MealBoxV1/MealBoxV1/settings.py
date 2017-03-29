@@ -25,9 +25,9 @@ SECRET_KEY = SecretConfigs.secretKey()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mealbox.pythonanywhere.com']
 
-SITE_ID = 1
+#SITE_ID = 1
 
 # Application definition
 
@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'sslserver',
+    'django.contrib.redirects',
+    #'sslserver',
+    'bootstrap3',
     'Login',
     'Search',
 ]
@@ -52,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware'
 ]
 
 ROOT_URLCONF = 'MealBoxV1.urls'
@@ -78,17 +81,27 @@ WSGI_APPLICATION = 'MealBoxV1.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': SecretConfigs.postgressqlDB(),
+#         'USER': SecretConfigs.postgressqlUser(),
+#         'PASSWORD': SecretConfigs.postgresqlPW(),
+#         'HOST': SecretConfigs.postgressqlHost(),
+#         'PORT': SecretConfigs.postgressqlPort()
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': SecretConfigs.postgressqlDB(),
-        'USER': SecretConfigs.postgressqlUser(),
-        'PASSWORD': SecretConfigs.postgresqlPW(),
-        'HOST': SecretConfigs.postgressqlHost(),
-        'PORT': SecretConfigs.postgressqlPort()
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': SecretConfigs.mySqlName(),
+        'USER': SecretConfigs.mySqlUser(),
+        'PASSWORD': SecretConfigs.mySqlPW(),
+        'HOST': SecretConfigs.mySqlHost(),   # Or an IP Address that your DB is hosted on
+  #      'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -133,3 +146,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
 
 #ct/MealBoxV1/static/static_dirs')STATICFILES_DIRS = ('/Users/akeelah/PycharmProjects/CS411Team5Proje
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static', 'static_dirs'),)
+
+SECURE_SSL_REDIRECT = True
+

@@ -23,10 +23,13 @@ def search(request):
         # Grab the search string by keyword from POST as defined in forms.py
         searchString = str(request.POST.get('search', None))
 
+        # Check the DB for the cached result
         cacheResult = searchDBCacheForSearch(searchString)
 
         if cacheResult is None:
-            
+           
+            print ("NOT IN CACHE")
+
             # Hit the API:
             r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
         
@@ -35,10 +38,13 @@ def search(request):
             # Serialize data for the searchResults.html template
             return render(request, 'searchResults.html', {'objects': r.json()['recipes'], 'searchString': searchString})
         
-        else:    
+        else:
+
+            # We want the second element of tuple because it is the third row in the cache db
             print("cacheResult: ", cacheResult[2])
-            cacheResult = json.loads(cacheResult[2])
-            return render(request, 'searchResults.html', {'objects': cacheResult['recipes'], 'searchString': searchString})
+            
+            cacheResultDataColumn = json.loads(cacheResult[2])
+            return render(request, 'searchResults.html', {'objects': cacheResultDataColumn['recipes'], 'searchString': searchString})
     # if a GET (or any other method) we'll create a blank form
     else:
         # If the user has not logged in yet (cookie doesn't exist or we don't have a user session)

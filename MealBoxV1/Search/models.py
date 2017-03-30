@@ -8,8 +8,8 @@ class Search(models.Model):
 
 
 class SearchModel(models.Model):
-    searchID = models.IntegerField()
-    searchTerm = models.CharField()
-    dataResponse = models.TextField()
-    pageNum = models.IntegerField()
-    dateCached = models.DateField()
+    search_id = models.IntegerField()
+    search_term = models.CharField()
+    data_response = models.TextField()
+    page_num = models.IntegerField()
+    date_cached = models.DateField()

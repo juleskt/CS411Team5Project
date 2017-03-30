@@ -79,13 +79,15 @@ def insertSearchIntoDBCache(searchTerm, jsonResult):
             (
                 search_term,
                 data_response,
-                page_num
+                page_num,
+                date_cached
             )
             VALUES
             (
                 %s,
                 %s,
-                %s
+                %s,
+                CURDATE()
             )
             
         """, [searchTerm, json.dumps(jsonResult), 1]
@@ -94,3 +96,16 @@ def insertSearchIntoDBCache(searchTerm, jsonResult):
     
     print("INSERT RESULT: ", result)
 
+def updateDataAndDateDBCache(searchTerm, jsonResult):
+    cursor = connection.cursor()
+    cursor.execute(
+    """
+    UPDATE
+        searchCache_tbl
+    SET
+        data_response=%s,
+        date_cached=CURDATE()
+    WHERE
+        search_term = %s
+    """, [jsonResult, searchTerm]
+    )

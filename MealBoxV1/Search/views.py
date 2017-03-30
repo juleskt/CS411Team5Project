@@ -35,7 +35,7 @@ def search(request):
                 FROM
                   mealbox$MealBoxDB.searchCache_tbl
                 WHERE
-                  searchTerm = %s """, [searchString]
+                  search_term = %s """, [searchString]
         ):
             print(search)
 

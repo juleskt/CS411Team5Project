@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import json
 from SecretConfigs import *
-from django.db import connections
+from django.db import connection
 from .models import *
 
 # add to your views
@@ -22,23 +22,23 @@ def search(request):
     if request.method == 'POST':
         # Grab the search string by keyword from POST as defined in forms.py
         searchString = str(request.POST.get('search', None))
-        print(searchString)
 
-        for search in SearchModel.objects.raw(
-            """
-                SELECT
-                    *
-                FROM
-                    searchCache_tbl"""
-        ):
-            print(search)
+        cacheResult = searchDBCacheForSearch(searchString)
 
-        # redirect to a new URL:
-        #r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
-        # Serialize data for the searchResults.html template
-        #print(r.json())
-        return render(request, 'searchResults.html', {'objects': dummyQuery['recipes'], 'searchString': searchString})
+        if cacheResult is None:
+            
+            # Hit the API:
+            r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
+        
+            insertSearchIntoDBCache(searchString, r.json())
 
+            # Serialize data for the searchResults.html template
+            return render(request, 'searchResults.html', {'objects': r.json()['recipes'], 'searchString': searchString})
+        
+        else:    
+            print("cacheResult: ", cacheResult[2])
+            cacheResult = json.loads(cacheResult[2])
+            return render(request, 'searchResults.html', {'objects': cacheResult['recipes'], 'searchString': searchString})
     # if a GET (or any other method) we'll create a blank form
     else:
         # If the user has not logged in yet (cookie doesn't exist or we don't have a user session)
@@ -48,3 +48,43 @@ def search(request):
         form = SearchForm()
 
     return render(request, 'search.html', {'form': form, 'name': request.session['user']['name']})
+
+def searchDBCacheForSearch(searchTerm):
+    cursor = connection.cursor()
+    cursor.execute(
+        """
+        SELECT
+            *
+        FROM
+            searchCache_tbl
+        WHERE
+            search_term = %s 
+        """, [searchTerm]
+    )
+
+    return cursor.fetchone()
+
+def insertSearchIntoDBCache(searchTerm, jsonResult):
+    cursor = connection.cursor()
+    result = cursor.execute(
+        """
+        INSERT INTO
+            searchCache_tbl
+            (
+                search_term,
+                data_response,
+                page_num
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s
+            )
+            
+        """, [searchTerm, json.dumps(jsonResult), 1]
+
+    )
+    
+    print("INSERT RESULT: ", result)
+

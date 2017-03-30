@@ -9,7 +9,10 @@ class Search(models.Model):
 
 class SearchModel(models.Model):
     search_id = models.IntegerField()
-    search_term = models.CharField()
+    search_term = models.CharField(max_length=255)
     data_response = models.TextField()
     page_num = models.IntegerField()
     date_cached = models.DateField()
+
+    class Meta:
+        db_table = 'searchCache_tbl'

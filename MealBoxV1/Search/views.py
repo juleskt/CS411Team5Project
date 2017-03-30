@@ -7,6 +7,7 @@ import json
 from SecretConfigs import *
 from django.db import connection
 from .models import *
+from datetime import date, datetime
 
 # add to your views
 def contact(request):
@@ -33,7 +34,8 @@ def search(request):
             # Hit the API:
             r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
         
-            insertSearchIntoDBCache(searchString, r.json())
+            if r.json()['count'] > 5:
+                insertSearchIntoDBCache(searchString, r.json())
 
             # Serialize data for the searchResults.html template
             return render(request, 'searchResults.html', {'objects': r.json()['recipes'], 'searchString': searchString})
@@ -41,10 +43,26 @@ def search(request):
         else:
 
             # We want the second element of tuple because it is the third row in the cache db
-            print("cacheResult: ", cacheResult[2])
             
-            cacheResultDataColumn = json.loads(cacheResult[2])
-            return render(request, 'searchResults.html', {'objects': cacheResultDataColumn['recipes'], 'searchString': searchString})
+            cachedDate = cacheResult[4]
+            currentDate = datetime.today().date()
+
+            print("Cached Date: ", cachedDate, "Current Date: ", currentDate)
+
+            dateDelta = currentDate - cachedDate
+
+            if (dateDelta.days < 1):
+                cacheResultDataColumn = json.loads(cacheResult[2])
+                return render(request, 'searchResults.html', {'objects': cacheResultDataColumn['recipes'], 'searchString': searchString})
+
+            else:
+                # Hit the API:
+                r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
+
+                if r.json()['count'] > 5:
+                    insertSearchIntoDBCache(searchString, r.json())
+            
+                return render(request, 'searchResults.html', {'objects': r.json()['recipes'], 'searchString': searchString})
     # if a GET (or any other method) we'll create a blank form
     else:
         # If the user has not logged in yet (cookie doesn't exist or we don't have a user session)

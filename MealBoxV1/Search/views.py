@@ -7,6 +7,7 @@ import json
 from SecretConfigs import *
 from django.db import connection, connections
 from .models import *
+from datetime import date, datetime
 
 # add to your views
 def contact(request):
@@ -36,9 +37,8 @@ def search(request):
             # Hit the API:
             r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
 
-            if r is None:
-                r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkBackupKey() + '&q=' + searchString)
-
+        
+            if r.json()['count'] > 5:
                 insertSearchIntoDBCache(searchString, r.json())
 
             # Serialize data for the searchResults.html template
@@ -47,10 +47,26 @@ def search(request):
         else:
 
             # We want the second element of tuple because it is the third row in the cache db
-            print("cacheResult: ", cacheResult[2])
+            
+            cachedDate = cacheResult[4]
+            currentDate = datetime.today().date()
 
-            cacheResultDataColumn = json.loads(cacheResult[2])
-            return render(request, 'searchResults.html', {'recipes': cacheResultDataColumn['recipes'], 'searchString': searchString})
+            print("Cached Date: ", cachedDate, "Current Date: ", currentDate)
+
+            dateDelta = currentDate - cachedDate
+
+            if dateDelta.days < 1:
+                cacheResultDataColumn = json.loads(cacheResult[2])
+                return render(request, 'searchResults.html', {'recipes': cacheResultDataColumn['recipes'], 'searchString': searchString})
+
+            else:
+                # Hit the API:
+                r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
+
+                if r.json()['count'] > 5:
+                    insertSearchIntoDBCache(searchString, r.json())
+            
+                return render(request, 'searchResults.html', {'recipes': r.json()['recipes'], 'searchString': searchString})
     # if a GET (or any other method) we'll create a blank form
     else:
         # If the user has not logged in yet (cookie doesn't exist or we don't have a user session)
@@ -87,13 +103,15 @@ def insertSearchIntoDBCache(searchTerm, jsonResult):
             (
                 search_term,
                 data_response,
-                page_num
+                page_num,
+                date_cached
             )
             VALUES
             (
                 %s,
                 %s,
-                %s
+                %s,
+                CURDATE()
             )
             
         """, [searchTerm, json.dumps(jsonResult), 1]
@@ -102,10 +120,23 @@ def insertSearchIntoDBCache(searchTerm, jsonResult):
     
     print("INSERT RESULT: ", result)
 
-
 def addRecipe(request):
     recipe = request.POST.get('recipeDirections')
 
     print(recipe)
 
     return HttpResponse()
+
+def updateDataAndDateDBCache(searchTerm, jsonResult):
+    cursor = connection.cursor()
+    cursor.execute(
+    """
+    UPDATE
+        searchCache_tbl
+    SET
+        data_response=%s,
+        date_cached=CURDATE()
+    WHERE
+        search_term = %s
+    """, [jsonResult, searchTerm]
+    )

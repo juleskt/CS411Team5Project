@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from SecretConfigs import *
 import requests
 import Search.forms as searchForms
+from django.db import connection, connections
+import json
 
 try:
     from StringIO import StringIO
@@ -52,10 +54,63 @@ def handleLogin(request):
         userProfileRequest = requests.get(userProfileUrl, headers=userProfileHeader)
         userProfile = userProfileRequest.json()
 
-        print("%s %s %s" % (userProfile['name'], userProfile['email'], userProfile['user_id']))
+        # Check if user exists in the db
+        userFromDB = searchUsersDB(userProfile)
 
-        request.session['user'] = userProfile
+        # If not, add them and grab their info
+        if userFromDB is None:
+            addUserToDB(userProfile)
+            userFromDB = searchUsersDB(userProfile)
+
+        print(userFromDB[0])
+
+        request.session['user'] = userFromDB[0]
+
         request.session['amazonLoginCache'] = request.COOKIES.get('amazon_Login_state_cache')
 
         # Redirect via name given in MealBoxV1.urls
         return redirect('search')
+
+
+# Users_tbl
+# user_amazon id | user_name | email | zip_code | phone_number
+def searchUsersDB(userData):
+    cursor = connections['users'].cursor()
+    cursor.execute("""
+        SELECT
+            *
+        FROM
+            Users_tbl
+        WHERE
+            user_amazon_id = %s
+        """, [userData['user_id']]
+    )
+
+    # https://docs.djangoproject.com/en/1.10/topics/db/sql/
+    # Takes sql output and returns dictionary
+    columns = [col[0] for col in cursor.description]
+
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
+
+def addUserToDB(userData):
+    cursor = connections['users'].cursor()
+    result = cursor.execute("""
+        INSERT INTO
+            Users_tbl
+            (
+                user_amazon_id,
+                user_name,
+                email
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s
+            )
+
+        """, [userData['user_id'], userData['name'], userData['email']])
+

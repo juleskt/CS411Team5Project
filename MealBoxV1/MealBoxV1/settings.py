@@ -101,7 +101,7 @@ DATABASES = {
         'HOST': SecretConfigs.mySqlHost(),   # Or an IP Address that your DB is hosted on
   #      'PORT': '3306',
     },
-    'user': {
+    'users': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': SecretConfigs.mySqlUsers(),
         'USER': SecretConfigs.mySqlUser(),

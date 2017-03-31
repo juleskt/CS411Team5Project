@@ -37,7 +37,6 @@ def search(request):
             # Hit the API:
             r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
 
-        
             if r.json()['count'] > 5:
                 insertSearchIntoDBCache(searchString, r.json())
 
@@ -75,7 +74,7 @@ def search(request):
 
         form = SearchForm()
 
-    return render(request, 'search.html', {'form': form, 'name': request.session['user']['name']})
+    return render(request, 'search.html', {'form': form, 'name': request.session['user']['user_name']})
 
 
 def searchDBCacheForSearch(searchTerm):
@@ -115,15 +114,17 @@ def insertSearchIntoDBCache(searchTerm, jsonResult):
             )
             
         """, [searchTerm, json.dumps(jsonResult), 1]
-
     )
     
     print("INSERT RESULT: ", result)
 
-def addRecipe(request):
-    recipe = request.POST.get('recipeDirections')
 
-    print(recipe)
+#recipeID, recipeTitle, recipeDirections, recipeIngredientsUrl
+def addRecipe(request):
+    recipeIngredientsUrl = request.POST.get('recipeIngredientsUrl')
+    recipeIngredientsRedirectText = requests.get(recipeIngredientsUrl).text
+
+    print("Ingredients URL:", recipeIngredientsRedirectText, recipeIngredientsUrl)
 
     return HttpResponse()
 

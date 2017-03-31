@@ -58,11 +58,9 @@ def handleLogin(request):
         userFromDB = searchUsersDB(userProfile)
 
         # If not, add them and grab their info
-        if userFromDB is None:
+        if not userFromDB:
             addUserToDB(userProfile)
             userFromDB = searchUsersDB(userProfile)
-
-        print(userFromDB[0])
 
         request.session['user'] = userFromDB[0]
 
@@ -114,3 +112,4 @@ def addUserToDB(userData):
 
         """, [userData['user_id'], userData['name'], userData['email']])
 
+    print(result)

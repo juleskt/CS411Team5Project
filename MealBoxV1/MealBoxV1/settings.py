@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     #'sslserver',
     'bootstrap3',
     'Login',
-    'Search',
+    'Search'
 ]
 
 MIDDLEWARE = [

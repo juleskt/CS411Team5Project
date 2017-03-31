@@ -25,7 +25,7 @@ SECRET_KEY = SecretConfigs.secretKey()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mealbox.pythonanywhere.com']
+ALLOWED_HOSTS = ['www.mealbox.tech']
 
 #SITE_ID = 1
 

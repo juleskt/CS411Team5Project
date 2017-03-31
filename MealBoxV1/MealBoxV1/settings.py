@@ -25,7 +25,7 @@ SECRET_KEY = SecretConfigs.secretKey()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mealbox.pythonanywhere.com']
+ALLOWED_HOSTS = ['dev.queen-yilin.tech']
 
 #SITE_ID = 1
 
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.redirects',
-    #'sslserver',
+   # 'sslserver',
     'bootstrap3',
     'Login',
     'Search'

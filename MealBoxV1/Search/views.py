@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import json
 from SecretConfigs import *
-from django.db import connection
+from django.db import connection, connections
 from .models import *
 
 # add to your views
@@ -23,28 +23,34 @@ def search(request):
         # Grab the search string by keyword from POST as defined in forms.py
         searchString = str(request.POST.get('search', None))
 
-        # Check the DB for the cached result
+        # UnComment below and comment out everything else for test queries
+        #return render(request, 'searchResults.html', {'recipes': dummyQuery['recipes'], 'searchString': searchString})
+
+        #Check the DB for the cached result
         cacheResult = searchDBCacheForSearch(searchString)
 
         if cacheResult is None:
-           
-            print ("NOT IN CACHE")
+
+            print("NOT IN CACHE")
 
             # Hit the API:
             r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
-        
-            insertSearchIntoDBCache(searchString, r.json())
+
+            if r is None:
+                r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkBackupKey() + '&q=' + searchString)
+
+                insertSearchIntoDBCache(searchString, r.json())
 
             # Serialize data for the searchResults.html template
-            return render(request, 'searchResults.html', {'objects': r.json()['recipes'], 'searchString': searchString})
-        
+            return render(request, 'searchResults.html', {'recipes': r.json()['recipes'], 'searchString': searchString})
+
         else:
 
             # We want the second element of tuple because it is the third row in the cache db
             print("cacheResult: ", cacheResult[2])
-            
+
             cacheResultDataColumn = json.loads(cacheResult[2])
-            return render(request, 'searchResults.html', {'objects': cacheResultDataColumn['recipes'], 'searchString': searchString})
+            return render(request, 'searchResults.html', {'recipes': cacheResultDataColumn['recipes'], 'searchString': searchString})
     # if a GET (or any other method) we'll create a blank form
     else:
         # If the user has not logged in yet (cookie doesn't exist or we don't have a user session)
@@ -54,6 +60,7 @@ def search(request):
         form = SearchForm()
 
     return render(request, 'search.html', {'form': form, 'name': request.session['user']['name']})
+
 
 def searchDBCacheForSearch(searchTerm):
     cursor = connection.cursor()
@@ -69,6 +76,7 @@ def searchDBCacheForSearch(searchTerm):
     )
 
     return cursor.fetchone()
+
 
 def insertSearchIntoDBCache(searchTerm, jsonResult):
     cursor = connection.cursor()
@@ -94,3 +102,10 @@ def insertSearchIntoDBCache(searchTerm, jsonResult):
     
     print("INSERT RESULT: ", result)
 
+
+def addRecipe(request):
+    recipe = request.POST.get('recipeDirections')
+
+    print(recipe)
+
+    return HttpResponse()

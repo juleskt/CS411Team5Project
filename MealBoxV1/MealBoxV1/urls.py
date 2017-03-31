@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^contact/$', SearchViews.contact, name='contact'),
     url(r'^search/$', SearchViews.search, name='search'),
     url(r'^search-result/$', SearchViews.search, name='search-result'),
+    url(r'^add-recipe', SearchViews.addRecipe, name='add-recipe'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

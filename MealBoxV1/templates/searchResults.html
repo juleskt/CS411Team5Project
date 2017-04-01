@@ -33,12 +33,6 @@
         }) (document);
     </script>
 
-    <script type="text/javascript">
-        document.getElementById('Logout').onclick = function() {
-          amazon.Login.logout();
-        };
-    </script>
-
 </head>
 <body background-color=#D3D3D3; style='padding-bottom: 50px'>
 
@@ -83,61 +77,71 @@
         </h1>
     </div>
 
-    {% for obj in objects %}
+    {% for recipe in recipes %}
     <div style='margin-bottom: 20px;'>
         <div style='width: 800px; height: 172px; margin:0 auto; border: 1px solid black;' background-color=#FFFFFF;>
                
-                <div style='width:150px; float: left;'>
-                    <img
-                        border="1"
-                        src={{ obj.image_url }}
-                        width="170" height="170"
-                    />
-                </div>    
+            <div style='width:150px; float: left;'>
+                <img
+                    border="1"
+                    src={{ recipe.image_url }}
+                    width="170" height="170"
+                />
+            </div>
 
-
-                <div style='width: 600px; height: 150px; float: right; margin-left: 20px;'>
-                    <h4 class="title">
-                        <a href='{{ obj.source_url }}'>{{ obj.title }}</a> 
-                    </h4>
-
-                    <div>
-                        From: <a href='{{ obj.publisher_url }}'>{{ obj.publisher }}</a>
-                    </div>
-
-                    <div>
-                        View <a href='{{ obj.f2f_url }}'> Recipe </a>
-                    </div>
- 
-                    <div>
-                        <h5>Social Rank: {{ obj.social_rank}}</h5>
-                    </div>
-
-                    <div style='display: inline-block'>
-                        <div style='float: left'> 
-                            Add to:
-                            <button type="button" class="btn btn-primary btn-sm">Recipies</button>
-                            <button type'button' class='btn btn-primary btn-sm'>Shopping List</button>
-                        </div>
-
-                        <div class='dropup inline' style='float: left; margin-left:4px;'>
-                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                Meals
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Thanksgiving</a></li>
-                                <li><a href="#">Birthday</a></li>
-                                <li><a href="#">RandomHoliday</a></li>
-                            </ul>                 
-                        </div>
-
-                    </div>
-
+            <div style='width: 600px; height: 150px; float: right; margin-left: 20px;'>
+                <h4 class="title">
+                    <a href='{{ recipe.source_url }}'>{{ recipe.title }}</a>
+                </h4>
+                <div>
+                    From: <a href='{{ recipe.publisher_url }}'>{{ recipe.publisher }}</a>
                 </div>
-       
+                <div>
+                    <a href='{{ recipe.f2f_url }}'> View Recipe </a>
+                </div>
+                <div>
+                    <h5>Social Rank: {{ recipe.social_rank }}</h5>
+                </div>
+                <div style='display: inline-block'>
+                    <div style='float: left'>
+                        Add to:
+
+                        <button type="submit" id="recipes-{{ recipe.recipe_id }}" class="btn btn-primary btn-sm">Recipies</button>
+
+                        <button type='button' id='shopping-list-button' class='btn btn-primary btn-sm'>Shopping List</button>
+                    </div>
+
+                    <div class='dropup inline' style='float: left; margin-left:4px;'>
+                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                            Meals
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Thanksgiving</a></li>
+                            <li><a href="#">Birthday</a></li>
+                            <li><a href="#">RandomHoliday</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>    
     </div>
+        <script type="text/javascript">
+            $('#recipes-{{ recipe.recipe_id }}').click(function(e) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'add-recipe' %}',
+                    data: {
+                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                        recipeID: '{{ recipe.recipe_id }}',
+                        recipeTitle: '{{ recipe.recipe_title }}',
+                        recipeDirections: '{{ recipe.source_url }}',
+                        recipeIngredientsUrl: '{{ recipe.f2f_url }}'
+                    }
+                });
+            });
+
+        </script>
     {% endfor %}
 
 </body>

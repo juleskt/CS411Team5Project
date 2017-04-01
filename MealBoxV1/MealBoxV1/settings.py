@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     #'sslserver',
     'bootstrap3',
     'Login',
-    'Search',
+    'Search'
 ]
 
 MIDDLEWARE = [
@@ -95,11 +95,18 @@ WSGI_APPLICATION = 'MealBoxV1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': SecretConfigs.mySqlName(),
+        'NAME': SecretConfigs.mySqlCache(),
         'USER': SecretConfigs.mySqlUser(),
         'PASSWORD': SecretConfigs.mySqlPW(),
         'HOST': SecretConfigs.mySqlHost(),   # Or an IP Address that your DB is hosted on
   #      'PORT': '3306',
+    },
+    'users': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': SecretConfigs.mySqlUsers(),
+        'USER': SecretConfigs.mySqlUser(),
+        'PASSWORD': SecretConfigs.mySqlPW(),
+        'HOST': SecretConfigs.mySqlHost()
     }
 }
 

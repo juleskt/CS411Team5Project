@@ -5,6 +5,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import json
 from SecretConfigs import *
+from django.db import connection, connections
+from .models import *
+from datetime import date, datetime
+from bs4 import BeautifulSoup
 
 # add to your views
 def contact(request):
@@ -20,12 +24,52 @@ def search(request):
     if request.method == 'POST':
         # Grab the search string by keyword from POST as defined in forms.py
         searchString = str(request.POST.get('search', None))
-        # redirect to a new URL:
-        #r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
-        # Serialize data for the searchResults.html template
-        #print(r.json())
-        return render(request, 'searchResults.html', {'objects': dummyQuery['recipes'], 'searchString': searchString})
 
+        # UnComment below and comment out everything else for test queries
+        #return render(request, 'searchResults.html', {'recipes': dummyQuery['recipes'], 'searchString': searchString})
+
+        #Check the DB for the cached result
+        cacheResult = searchDBCacheForSearch(searchString)
+
+        if cacheResult is None:
+
+            print("NOT IN CACHE")
+
+            # Hit the API:
+            r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
+
+            if r.json()['count'] > 5:
+                insertSearchIntoDBCache(searchString, r.json())
+
+            # Serialize data for the searchResults.html template
+            return render(request, 'searchResults.html', {'recipes': r.json()['recipes'], 'searchString': searchString})
+
+        else:
+
+            # We want the second element of tuple because it is the third row in the cache db
+            
+            cachedDate = cacheResult[4]
+            currentDate = datetime.today().date()
+
+            dateDelta = currentDate - cachedDate
+
+            print("Cached Date: ", cachedDate, "Current Date: ", currentDate, "Delta:", dateDelta.days)
+
+            if dateDelta.days < 1:
+                cacheResultDataColumn = json.loads(cacheResult[2])
+                return render(request, 'searchResults.html', {'recipes': cacheResultDataColumn['recipes'], 'searchString': searchString})
+
+            else:
+                # Hit the API:
+                r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
+
+                if r.json() is None:
+                    r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkBackUpKey() + '&q=' + searchString)
+
+                if r.json()['count'] > 5:
+                    insertSearchIntoDBCache(searchString, r.json())
+            
+                return render(request, 'searchResults.html', {'recipes': r.json()['recipes'], 'searchString': searchString})
     # if a GET (or any other method) we'll create a blank form
     else:
         # If the user has not logged in yet (cookie doesn't exist or we don't have a user session)
@@ -34,4 +78,75 @@ def search(request):
 
         form = SearchForm()
 
-    return render(request, 'search.html', {'form': form, 'name': request.session['user']['name']})
+    return render(request, 'search.html', {'form': form, 'name': request.session['user']['user_name']})
+
+#recipeID, recipeTitle, recipeDirections, recipeIngredientsUrl coming in from POST
+def addRecipe(request):
+    recipeIngredientsUrl = request.POST.get('recipeIngredientsUrl')
+    # Get the html source for the ingredients url
+    recipeIngredientsSource = requests.get(recipeIngredientsUrl).text
+
+    # Pass the source html to BeautifulSoup
+    htmlParser = BeautifulSoup(recipeIngredientsSource)
+    # Look through li tags, and find itemprop attributes named ingredients
+    htmlParser.find('li', {'itemprop': 'ingredients'}).text
+
+    print("Ingredients URL:", recipeIngredientsSource, recipeIngredientsUrl)
+
+    return HttpResponse()
+
+def searchDBCacheForSearch(searchTerm):
+    cursor = connection.cursor()
+    cursor.execute(
+        """
+        SELECT
+            *
+        FROM
+            searchCache_tbl
+        WHERE
+            search_term = %s 
+        """, [searchTerm]
+    )
+
+    return cursor.fetchone()
+
+
+def insertSearchIntoDBCache(searchTerm, jsonResult):
+    cursor = connection.cursor()
+    result = cursor.execute(
+        """
+        INSERT INTO
+            searchCache_tbl
+            (
+                search_term,
+                data_response,
+                page_num,
+                date_cached
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s,
+                CURDATE()
+            )
+            
+        """, [searchTerm, json.dumps(jsonResult), 1]
+    )
+    
+    print("INSERT RESULT: ", result)
+
+
+def updateDataAndDateDBCache(searchTerm, jsonResult):
+    cursor = connection.cursor()
+    cursor.execute(
+    """
+    UPDATE
+        searchCache_tbl
+    SET
+        data_response=%s,
+        date_cached=CURDATE()
+    WHERE
+        search_term = %s
+    """, [jsonResult, searchTerm]
+    )

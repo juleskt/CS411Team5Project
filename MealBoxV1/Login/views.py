@@ -74,7 +74,8 @@ def handleLogin(request):
 # user_amazon id | user_name | email | zip_code | phone_number
 def searchUsersDB(userData):
     cursor = connections['users'].cursor()
-    cursor.execute("""
+    cursor.execute(
+        """
         SELECT
             *
         FROM
@@ -95,7 +96,8 @@ def searchUsersDB(userData):
 
 def addUserToDB(userData):
     cursor = connections['users'].cursor()
-    result = cursor.execute("""
+    result = cursor.execute(
+        """
         INSERT INTO
             Users_tbl
             (
@@ -109,7 +111,4 @@ def addUserToDB(userData):
                 %s,
                 %s
             )
-
         """, [userData['user_id'], userData['name'], userData['email']])
-
-    print(result)

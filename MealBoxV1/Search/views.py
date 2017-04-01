@@ -8,6 +8,7 @@ from SecretConfigs import *
 from django.db import connection, connections
 from .models import *
 from datetime import date, datetime
+from bs4 import BeautifulSoup
 
 # add to your views
 def contact(request):
@@ -50,9 +51,9 @@ def search(request):
             cachedDate = cacheResult[4]
             currentDate = datetime.today().date()
 
-            print("Cached Date: ", cachedDate, "Current Date: ", currentDate)
-
             dateDelta = currentDate - cachedDate
+
+            print("Cached Date: ", cachedDate, "Current Date: ", currentDate, "Delta:", dateDelta.days)
 
             if dateDelta.days < 1:
                 cacheResultDataColumn = json.loads(cacheResult[2])
@@ -61,6 +62,9 @@ def search(request):
             else:
                 # Hit the API:
                 r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
+
+                if r.json() is None:
+                    r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkBackUpKey() + '&q=' + searchString)
 
                 if r.json()['count'] > 5:
                     insertSearchIntoDBCache(searchString, r.json())
@@ -76,6 +80,20 @@ def search(request):
 
     return render(request, 'search.html', {'form': form, 'name': request.session['user']['user_name']})
 
+#recipeID, recipeTitle, recipeDirections, recipeIngredientsUrl coming in from POST
+def addRecipe(request):
+    recipeIngredientsUrl = request.POST.get('recipeIngredientsUrl')
+    # Get the html source for the ingredients url
+    recipeIngredientsSource = requests.get(recipeIngredientsUrl).text
+
+    # Pass the source html to BeautifulSoup
+    htmlParser = BeautifulSoup(recipeIngredientsSource)
+    # Look through li tags, and find itemprop attributes named ingredients
+    htmlParser.find('li', {'itemprop': 'ingredients'}).text
+
+    print("Ingredients URL:", recipeIngredientsSource, recipeIngredientsUrl)
+
+    return HttpResponse()
 
 def searchDBCacheForSearch(searchTerm):
     cursor = connection.cursor()
@@ -118,15 +136,6 @@ def insertSearchIntoDBCache(searchTerm, jsonResult):
     
     print("INSERT RESULT: ", result)
 
-
-#recipeID, recipeTitle, recipeDirections, recipeIngredientsUrl
-def addRecipe(request):
-    recipeIngredientsUrl = request.POST.get('recipeIngredientsUrl')
-    recipeIngredientsRedirectText = requests.get(recipeIngredientsUrl).text
-
-    print("Ingredients URL:", recipeIngredientsRedirectText, recipeIngredientsUrl)
-
-    return HttpResponse()
 
 def updateDataAndDateDBCache(searchTerm, jsonResult):
     cursor = connection.cursor()

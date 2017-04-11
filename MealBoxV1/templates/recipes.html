@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Search Results!</title>
+    <title>My Recipes!</title>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
@@ -18,35 +18,19 @@
     {# Display django.contrib.messages as Bootstrap alerts #}
     {% bootstrap_messages %}
 
-    <div id="amazon-root"></div>
-     <script type="text/javascript">
-
-        window.onAmazonLoginReady = function() {
-            amazon.Login.setClientId('amzn1.application-oa2-client.3841a328796f48d48add98af3e1bd6fa');
-        };
-
-        (function(d) {
-            var a = d.createElement('script'); a.type = 'text/javascript';
-            a.async = true; a.id = 'amazon-login-sdk';
-            a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
-            d.getElementById('amazon-root').appendChild(a);
-        }) (document);
-    </script>
 
 </head>
-<body background-color=#D3D3D3; style='padding-bottom: 50px'>
+<body>
 
     <div style='position:fixed; top: 0; width: 100%; z-index: 99'>
         <div class="navbar navbar-inverse" id="myNavbar">
             <div class="navbar-header">
-                <a href=''>
-                    <img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px; margin-top: 10px;'>
-                </a>
+                <a href=''><img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px; margin-top:10px;'></a>
             </div>
 
             <ul class="nav navbar-nav">
                 <li><a href='#'>Meals</a></li>
-                <li><a href='#'>Recipes</a></li>
+                <li><a href="/my-recipes">Recipes</a></li>
                 <li><a href='#'>Shopping Lists</a></li>
             </ul>
 
@@ -75,14 +59,14 @@
 
     <div style='margin-bottom:15px; margin-top: 75px'>
         <h1 class='title' style='width: 800px; margin: 0 auto'>
-            Results for {{ searchString }}:
+            My Recipes:
         </h1>
     </div>
 
     {% for recipe in recipes %}
     <div style='margin-bottom: 20px;'>
         <div style='width: 800px; height: 172px; margin:0 auto; border: 1px solid black;' background-color=#FFFFFF;>
-               
+
             <div style='width:150px; float: left;'>
                 <img
                     border="1"
@@ -102,17 +86,13 @@
                     <a href='{{ recipe.f2f_url }}'> View Recipe </a>
                 </div>
                 <div>
-                    <h5>Social Rank: {{ recipe.social_rank }}</h5>
+                    <h5>User Comments: {{ "It was terrible!!" }}</h5>
                 </div>
-                <div style='display: inline-block'>
-                    <div style='float: left'>
-                        Add to:
 
-                        <button type="submit" id="recipes-{{ recipe.recipe_id }}" class="btn btn-primary btn-sm">Recipes</button>
-
-                        <button type='button' id='shopping-list-button' class='btn btn-primary btn-sm'>Shopping List</button>
-                    </div>
-
+                <div style='float: left'>
+                    Add to:
+                    <button type='button' id='shopping-list-button' class='btn btn-primary btn-sm'>Shopping List</button>
+                </div>
                     <div class='dropup inline' style='float: left; margin-left:4px;'>
                         <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                             Meals
@@ -124,32 +104,10 @@
                             <li><a href="#">RandomHoliday</a></li>
                         </ul>
                     </div>
-                </div>
+
             </div>
-        </div>    
+        </div>
     </div>
-        <script type="text/javascript">
-            $('#recipes-{{ recipe.recipe_id }}').click(function(e) {
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url 'add-recipe' %}',
-                    data: {
-                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                        recipeID: '{{ recipe.recipe_id }}',
-                        recipeTitle: '{{ recipe.recipe_title }}',
-                        recipeDirections: '{{ recipe.source_url }}',
-                        recipeIngredientsUrl: '{{ recipe.f2f_url }}'
-                    }
-                });
-            });
-
-        </script>
     {% endfor %}
-
 </body>
-   <script type="text/javascript">
-        document.getElementById('Logout').onclick = function() {
-          amazon.Login.logout();
-        };
-   </script>
 </html>

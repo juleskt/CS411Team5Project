@@ -64,10 +64,10 @@ def search(request):
                 r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
 
                 if r.json() is None:
-                    r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkBackUpKey() + '&q=' + searchString)
+                    r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkBackupKey() + '&q=' + searchString)
 
                 if r.json()['count'] > 5:
-                    insertSearchIntoDBCache(searchString, r.json())
+                    updateSearchIntoDBCache(searchString, r.json())
             
                 return render(request, 'searchResults.html', {'recipes': r.json()['recipes'], 'searchString': searchString})
     # if a GET (or any other method) we'll create a blank form
@@ -80,9 +80,13 @@ def search(request):
 
     return render(request, 'search.html', {'form': form, 'name': request.session['user']['user_name']})
 
-#recipeID, recipeTitle, recipeDirections, recipeIngredientsUrl coming in from POST
+
+# recipeID, recipeTitle, recipeDirections, recipeIngredientsUrl coming in from POST
 def addRecipe(request):
     recipeIngredientsUrl = request.POST.get('recipeIngredientsUrl')
+    recipeTitle = request.POST.get('recipeTitle')
+    recipeID = request.POST.get('recipeID')
+    recipeDirections= request.POST.get('recipeDirections')
     # Get the html source for the ingredients url
     recipeIngredientsSource = requests.get(recipeIngredientsUrl).text
 
@@ -94,6 +98,7 @@ def addRecipe(request):
     print("Ingredients URL:", recipeIngredientsSource, recipeIngredientsUrl)
 
     return HttpResponse()
+
 
 def searchDBCacheForSearch(searchTerm):
     cursor = connection.cursor()
@@ -134,6 +139,22 @@ def insertSearchIntoDBCache(searchTerm, jsonResult):
         """, [searchTerm, json.dumps(jsonResult), 1]
     )
     
+    print("INSERT RESULT: ", result)
+
+
+def updateSearchIntoDBCache(searchTerm, jsonResult):
+    cursor = connection.cursor()
+    result = cursor.execute("""
+        UPDATE
+            searchCache_tbl
+        SET
+            data_response = %s,
+            page_num = %s,
+            date_cached = CURDATE()
+        WHERE
+          search_term = %s
+        """, [json.dumps(jsonResult), 1, searchTerm])
+
     print("INSERT RESULT: ", result)
 
 

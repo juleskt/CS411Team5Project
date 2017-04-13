@@ -83,8 +83,6 @@ def search(request):
 def addRecipe(request):
     recipeIngredientsUrl = request.POST.get('recipeIngredientsUrl')
 
-    print(recipeIngredientsUrl)
-
     recipeTitle = request.POST.get('recipeTitle')
     recipeID = request.POST.get('recipeID')
     recipeDirections= request.POST.get('recipeDirections')
@@ -97,7 +95,12 @@ def addRecipe(request):
     if searchDBForSavedRecipe(recipeID, request.session['user']['user_amazon_id']) is None:
         addSavedRecipeForUser(recipeID, request.session['user']['user_amazon_id'])
 
-    getIngredientsFromF2FURL(recipeIngredientsUrl)
+    ingredientsDict = getIngredientsFromF2FURL(recipeIngredientsUrl)
+    ingredients = ingredientsDict['ingredients']
+    rawIngredientsAndDescription = ingredientsDict['rawIngredients']
+
+    print(ingredients)
+    print(rawIngredientsAndDescription)
 
     return HttpResponse()
 
@@ -110,12 +113,14 @@ def getIngredientsFromF2FURL(ingreidentsURL):
     # Look through li tags, and find itemprop attributes named ingredients
     htmlIngredients = htmlParser.findAll('li', {'itemprop': 'ingredients'})
 
-    # Raw html ingredients
+    # Raw, unparsed ingredients with full description, will go into Recipe_ingredients_tbl as description
     rawIngredients = []
-
+    # Ingredients in nested list form with some extraneous details
     parsedIngredientsList = []
+    # Final list of ingredients, with only the ingredient
     parsedIngredients = []
 
+    # Loop through the html tags and grab the ingredients + description (in the text member variable)
     for ingredient in htmlIngredients:
         rawIngredients.append(ingredient.text)
 
@@ -133,24 +138,27 @@ def getIngredientsFromF2FURL(ingreidentsURL):
         elementRemoved = False
 
         # Only add to the list if the chunk doesn't have numbers or parenthesis
+        # Some recipes will have the amounts with the ingredient, we don't need this for Amazon search
         for chunk in ingredientSplit:
             if not any(char.isdigit() or char is '(' or char is ')' for char in chunk):
                 ingredientList.append(chunk)
             else:
                 elementRemoved = True
 
+        # If we removed something, remove the first item left. Heuristically, 1 tsp sugar would look like
+        # tsp sugar after the above extraction, we want to remove tsp. Values are usually followed by units.
         if elementRemoved:
             ingredientList.pop(0)
         parsedIngredientsList.append(ingredientList)
 
-    # Combine the lists into space-separated words, remove everything after the comma character, if it exists
+    # Combine the lists into space-separated words and remove everything after the comma character, if it exists
+    # Add to final list
     for parsedIngredient in parsedIngredientsList:
         parsedIngredients.append(' '.join(parsedIngredient).split(',')[0])
 
-    print("Ingredients:", parsedIngredients)
-    #print("Ingredients:", rawIngredients)
+    print(rawIngredients)
 
-#Bitch
+    return {'ingredients': parsedIngredients, 'rawIngredients': rawIngredients}
 
 def searchDBCacheForSearch(searchTerm):
     cursor = connection.cursor()

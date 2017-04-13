@@ -6,7 +6,6 @@ import requests
 import json
 from SecretConfigs import *
 from django.db import connection, connections
-from .models import *
 from datetime import date, datetime
 from bs4 import BeautifulSoup
 
@@ -45,7 +44,6 @@ def search(request):
             return render(request, 'searchResults.html', {'recipes': r.json()['recipes'], 'searchString': searchString})
 
         else:
-
             # We want the second element of tuple because it is the third row in the cache db
             
             cachedDate = cacheResult[4]
@@ -84,20 +82,44 @@ def search(request):
 # recipeID, recipeTitle, recipeDirections, recipeIngredientsUrl coming in from POST
 def addRecipe(request):
     recipeIngredientsUrl = request.POST.get('recipeIngredientsUrl')
+
+    print(recipeIngredientsUrl)
+
     recipeTitle = request.POST.get('recipeTitle')
     recipeID = request.POST.get('recipeID')
     recipeDirections= request.POST.get('recipeDirections')
     # Get the html source for the ingredients url
     recipeIngredientsSource = requests.get(recipeIngredientsUrl).text
 
-    # Pass the source html to BeautifulSoup
-    htmlParser = BeautifulSoup(recipeIngredientsSource)
-    # Look through li tags, and find itemprop attributes named ingredients
-    htmlParser.find('li', {'itemprop': 'ingredients'}).text
+    if searchDBForRecipe(recipeID) is None:
+        addRecipeToDB(recipeID, recipeTitle, recipeDirections)
 
-    print("Ingredients URL:", recipeIngredientsSource, recipeIngredientsUrl)
+    if searchDBForSavedRecipe(recipeID, request.session['user']['user_amazon_id']) is None:
+        addSavedRecipeForUser(recipeID, request.session['user']['user_amazon_id'])
+
+    getIngredientsFromF2FURL(recipeIngredientsUrl)
 
     return HttpResponse()
+
+
+def getIngredientsFromF2FURL(ingreidentsURL):
+
+    ingreidentsHTML = requests.get(ingreidentsURL).text
+    # Pass the source html to BeautifulSoup
+    htmlParser = BeautifulSoup(ingreidentsHTML, 'lxml')
+    # Look through li tags, and find itemprop attributes named ingredients
+    htmlIngredients = htmlParser.findAll('li', {'itemprop': 'ingredients'})
+    rawIngredients = []
+    parsedIngredients = []
+
+    for ingredient in htmlIngredients:
+        rawIngredients.append(ingredient.text)
+
+        # Remove non letters from the string, but keep spaces
+        parsedIngredients.append(''.join([i for i in ingredient.text if i.isalpha() or i is ' ']))
+
+    print("Ingredients:", parsedIngredients)
+    print("Ingredients:", rawIngredients)
 
 
 def searchDBCacheForSearch(searchTerm):
@@ -109,7 +131,7 @@ def searchDBCacheForSearch(searchTerm):
         FROM
             searchCache_tbl
         WHERE
-            search_term = %s 
+            search_term = %s
         """, [searchTerm]
     )
 
@@ -171,3 +193,83 @@ def updateDataAndDateDBCache(searchTerm, jsonResult):
         search_term = %s
     """, [jsonResult, searchTerm]
     )
+
+
+def addRecipeToDB(recipeID, recipeName, recipeURL):
+    cursor = connections['users'].cursor()
+    result = cursor.execute(
+        """
+        INSERT INTO
+            Recipes_tbl
+            (
+                recipe_id,
+                recipe_title,
+                recipe_url,
+                recipe_source
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s,
+                %s
+            )
+        """, [recipeID, recipeName, recipeURL, recipeURL])
+
+    print("INSERT RESULT: ", result)
+
+
+def searchDBForRecipe(recipeID):
+    cursor = connections['users'].cursor()
+    cursor.execute(
+        """
+        SELECT
+            *
+        FROM
+            Recipes_tbl
+        WHERE
+            recipe_id = %s
+        """, [recipeID])
+
+    # https://docs.djangoproject.com/en/1.10/topics/db/sql/
+    # Takes sql output and returns dictionary
+    columns = [col[0] for col in cursor.description]
+
+    return [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+
+def searchDBForSavedRecipe(recipeID, userID):
+    cursor = connections['users'].cursor()
+    cursor.execute(
+        """
+        SELECT
+            *
+        FROM
+            Saved_recipe_tbl
+        WHERE
+            recipe_id = %s AND
+            user_id = %s
+        """, [recipeID, userID])
+
+    # https://docs.djangoproject.com/en/1.10/topics/db/sql/
+    # Takes sql output and returns dictionary
+    columns = [col[0] for col in cursor.description]
+
+    return [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+
+def addSavedRecipeForUser(recipeID, userID):
+    cursor = connections['users'].cursor()
+    result = cursor.execute("""
+        INSERT INTO
+            Saved_recipe_tbl
+            (
+                recipe_id,
+                user_id
+            )
+            VALUES
+            (
+                %s,
+                %s
+            )
+        """, [recipeID, userID])

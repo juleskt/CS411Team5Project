@@ -136,7 +136,7 @@
                     data: {
                         csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
                         recipeID: '{{ recipe.recipe_id }}',
-                        recipeTitle: '{{ recipe.recipe_title }}',
+                        recipeTitle: '{{ recipe.title }}',
                         recipeDirections: '{{ recipe.source_url }}',
                         recipeIngredientsUrl: '{{ recipe.f2f_url }}'
                     }

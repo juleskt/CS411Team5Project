@@ -109,18 +109,48 @@ def getIngredientsFromF2FURL(ingreidentsURL):
     htmlParser = BeautifulSoup(ingreidentsHTML, 'lxml')
     # Look through li tags, and find itemprop attributes named ingredients
     htmlIngredients = htmlParser.findAll('li', {'itemprop': 'ingredients'})
+
+    # Raw html ingredients
     rawIngredients = []
+
+    parsedIngredientsList = []
     parsedIngredients = []
 
     for ingredient in htmlIngredients:
         rawIngredients.append(ingredient.text)
 
         # Remove non letters from the string, but keep spaces
-        parsedIngredients.append(''.join([i for i in ingredient.text if i.isalpha() or i is ' ']))
+        #parsedIngredients.append(''.join([i for i in ingredient.text if i.isalpha() or i is ' ']))
+
+    for ingredient in rawIngredients:
+        # Split the ingredient string by spaces
+        ingredientSplit = ingredient.split()
+
+        # Prepare a list for each ingredient
+        ingredientList = []
+
+        # If we removed a chunk in the last iteration, remove the next one too
+        elementRemoved = False
+
+        # Only add to the list if the chunk doesn't have numbers or parenthesis
+        for chunk in ingredientSplit:
+            if not any(char.isdigit() or char is '(' or char is ')' for char in chunk):
+                ingredientList.append(chunk)
+            else:
+                elementRemoved = True
+
+        if elementRemoved:
+            ingredientList.pop(0)
+        parsedIngredientsList.append(ingredientList)
+
+    # Combine the lists into space-separated words, remove everything after the comma character, if it exists
+    for parsedIngredient in parsedIngredientsList:
+        parsedIngredients.append(' '.join(parsedIngredient).split(',')[0])
 
     print("Ingredients:", parsedIngredients)
-    print("Ingredients:", rawIngredients)
+    #print("Ingredients:", rawIngredients)
 
+#Bitch
 
 def searchDBCacheForSearch(searchTerm):
     cursor = connection.cursor()

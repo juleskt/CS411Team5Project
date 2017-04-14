@@ -1,4 +1,5 @@
 from django.db import connection, connections
+import json
 
 def searchDBCacheForSearch(searchTerm):
     cursor = connection.cursor()
@@ -144,20 +145,37 @@ def addSavedRecipeForUser(recipeID, userID):
         """, [recipeID, userID])
 
 
-def searchDBForSavedIngredient(recipeID, userID):
+def searchDBForSavedIngredient(ingredientName):
+    print("INCOMING INGREDIENT:", ingredientName)
     cursor = connections['users'].cursor()
     cursor.execute("""
         SELECT
             *
         FROM
-            Saved_recipe_tbl
+            Ingredient_tbl
         WHERE
-            recipe_id = %s AND
-            user_id = %s
-        """, [recipeID, userID])
+            ingredient_name = %s
+        """, [ingredientName])
 
     # https://docs.djangoproject.com/en/1.10/topics/db/sql/
     # Takes sql output and returns dictionary
     columns = [col[0] for col in cursor.description]
 
     return [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+
+def addIngredientToDB(ingredientName):
+    cursor = connections['users'].cursor()
+    result = cursor.execute("""
+        INSERT INTO
+            Ingredient_tbl
+            (
+                ingredient_name
+            )
+            VALUES
+            (
+                %s
+            )
+        """, [ingredientName])
+
+    print("INSERT RESULT: ", result)

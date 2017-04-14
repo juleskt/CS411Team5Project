@@ -5,7 +5,10 @@
 /MealBoxV1/SecretConfigs.py
 /MealBoxV1/.idea/*iml
 SecretConfigs.py
+*/MealboxV1/MealBoxV1/settings.py
 /MealboxV1/MealBoxV1/settings.py
+/MealBoxV1/settings.py
+*settings.py
 *swp
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm

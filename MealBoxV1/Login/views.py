@@ -94,6 +94,7 @@ def searchUsersDB(userData):
         for row in cursor.fetchall()
     ]
 
+
 def addUserToDB(userData):
     cursor = connections['users'].cursor()
     result = cursor.execute(

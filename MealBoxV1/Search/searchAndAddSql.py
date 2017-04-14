@@ -179,3 +179,24 @@ def addIngredientToDB(ingredientName):
         """, [ingredientName])
 
     print("INSERT RESULT: ", result)
+
+
+def addIngredientToRecipe(recipeID, ingredientID, rawDescription):
+    cursor = connections['users'].cursor()
+    result = cursor.execute("""
+        INSERT INTO
+            Recipe_ingredient_tbl
+            (
+                recipe_id,
+                ingredient_id,
+                description
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s
+            )
+        """, [recipeID, ingredientID, rawDescription])
+
+    print("INSERT RESULT: ", result)

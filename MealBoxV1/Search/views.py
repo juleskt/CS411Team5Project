@@ -109,9 +109,14 @@ def addRecipe(request):
     print("Parsed ingredients:", ingredients)
     print("Raw ingredients:", rawIngredientsAndDescription)
 
-    for ingredient in ingredients:
-        if not searchDBForSavedIngredient(ingredient):
+    for ingredient, rawDescription in zip(ingredients, rawIngredientsAndDescription):
+        savedIngredient = searchDBForSavedIngredient(ingredient)
+
+        if not savedIngredient:
             addIngredientToDB(ingredient)
+            savedIngredient = searchDBForSavedIngredient(ingredient)
+
+        addIngredientToRecipe(recipeID, savedIngredient[0]['ingredient_id'], rawDescription)
 
     return HttpResponse()
 

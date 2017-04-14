@@ -15,7 +15,6 @@ from SecretConfigs import *
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -26,8 +25,6 @@ SECRET_KEY = SecretConfigs.secretKey()
 DEBUG = True
 
 ALLOWED_HOSTS = ['mealbox.pythonanywhere.com']
-
-#SITE_ID = 1
 
 # Application definition
 
@@ -43,7 +40,10 @@ INSTALLED_APPS = [
     #'sslserver',
     'bootstrap3',
     'Login',
-    'Search'
+    'Search',
+    'Recipes',
+    'Meals',
+    'ShoppingList'
 ]
 
 MIDDLEWARE = [
@@ -80,17 +80,6 @@ WSGI_APPLICATION = 'MealBoxV1.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': SecretConfigs.postgressqlDB(),
-#         'USER': SecretConfigs.postgressqlUser(),
-#         'PASSWORD': SecretConfigs.postgresqlPW(),
-#         'HOST': SecretConfigs.postgressqlHost(),
-#         'PORT': SecretConfigs.postgressqlPort()
-#     }
-# }
 
 DATABASES = {
     'default': {
@@ -134,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 

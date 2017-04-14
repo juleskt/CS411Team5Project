@@ -68,7 +68,7 @@ def updateDataAndDateDBCache(searchTerm, jsonResult):
         """, [jsonResult, searchTerm])
 
 
-def addRecipeToDB(recipeID, recipeName, recipeURL):
+def addRecipeToDB(recipeID, recipeName, recipeURL, recipeImgURL):
     cursor = connections['users'].cursor()
     result = cursor.execute("""
         INSERT INTO
@@ -86,7 +86,7 @@ def addRecipeToDB(recipeID, recipeName, recipeURL):
                 %s,
                 %s
             )
-        """, [recipeID, recipeName, recipeURL, recipeURL])
+        """, [recipeID, recipeName, recipeImgURL, recipeURL])
 
     print("INSERT RESULT: ", result)
 

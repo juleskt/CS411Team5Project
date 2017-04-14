@@ -46,8 +46,8 @@
 
             <ul class="nav navbar-nav">
                 <li><a href='#'>Meals</a></li>
-                <li><a href='#'>Recipes</a></li>
-                <li><a href='#'>Shopping Lists</a></li>
+                <li><a href='{% url 'my-recipes' %}'>Recipes</a></li>
+                <li><a href='{% url 'my-list' %}'>Shopping Lists</a></li>
             </ul>
 
             <div class="col-sm-3 col-md-3">
@@ -110,7 +110,7 @@
 
                         <button type="submit" id="recipes-{{ recipe.recipe_id }}" class="btn btn-primary btn-sm">Recipes</button>
 
-                        <button type='button' id='shopping-list-button' class='btn btn-primary btn-sm'>Shopping List</button>
+                        <button type='button' id='shopping-list-{{ recipe.recipe_id }}' class='btn btn-primary btn-sm'>Shopping List</button>
                     </div>
 
                     <div class='dropup inline' style='float: left; margin-left:4px;'>
@@ -138,12 +138,25 @@
                         recipeID: '{{ recipe.recipe_id }}',
                         recipeTitle: '{{ recipe.title }}',
                         recipeDirections: '{{ recipe.source_url }}',
-                        recipeIngredientsUrl: '{{ recipe.f2f_url }}'
+                        recipeIngredientsUrl: '{{ recipe.f2f_url }}',
+                        recipeImageUrl: '{{ recipe.image_url }}'
                     }
                 });
             });
 
+            $('#shopping-list-{{ recipe.recipe_id }}').click(function(e) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'add-to-shopping-list' %}',
+                    data: {
+                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                        recipeID: '{{ recipe.recipe_id }}'
+                    }
+                });
+            });
         </script>
+
+
     {% endfor %}
 
 </body>

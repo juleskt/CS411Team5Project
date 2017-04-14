@@ -46,7 +46,7 @@ def handleLogin(request):
             raise BaseException("Invalid Token")
 
         # Store the access token in the session
-        request.session['amazonAcessToken'] = accessRequestJSON
+        request.session['amazonAccessToken'] = accessRequestJSON
 
         # exchange the access token for user profile
         userProfileUrl = 'https://api.amazon.com/user/profile'

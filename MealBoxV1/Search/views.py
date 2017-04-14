@@ -54,7 +54,7 @@ def search(request):
 
             print("Cached Date: ", cachedDate, "Current Date: ", currentDate, "Delta:", dateDelta.days)
 
-            if dateDelta.days < 1:
+            if dateDelta.days < 7:
                 cacheResultDataColumn = json.loads(cacheResult[2])
                 return render(request, 'searchResults.html', {'recipes': cacheResultDataColumn['recipes'], 'searchString': searchString})
 
@@ -82,47 +82,41 @@ def search(request):
 
 # recipeID, recipeTitle, recipeDirections, recipeIngredientsUrl coming in from POST
 def addRecipe(request):
-    recipeIngredientsUrl = request.POST.get('recipeIngredientsUrl')
+    if request.method == 'POST':
+        recipeIngredientsUrl = request.POST.get('recipeIngredientsUrl')
 
-    recipeTitle = request.POST.get('recipeTitle')
-    recipeID = request.POST.get('recipeID')
-    recipeDirections= request.POST.get('recipeDirections')
-    # Get the html source for the ingredients url
-    recipeIngredientsSource = requests.get(recipeIngredientsUrl).text
+        recipeTitle = request.POST.get('recipeTitle')
+        recipeID = request.POST.get('recipeID')
+        recipeDirections = request.POST.get('recipeDirections')
+        recipeImgURL = request.POST.get('recipeImageUrl')
 
-    test = searchDBForRecipe(recipeID)
+        # If the recipe isn't in the DB, add it
+        if not searchDBForRecipe(recipeID):
+            addRecipeToDB(recipeID, recipeTitle, recipeDirections, recipeImgURL)
 
-    if not searchDBForRecipe(recipeID):
-        addRecipeToDB(recipeID, recipeTitle, recipeDirections)
-    else:
-        print("NOT SAVING RECIPE")
+        # If the recipe isn't correlated to the user, make it so
+        if not searchDBForSavedRecipe(recipeID, request.session['user']['user_amazon_id']):
+            addSavedRecipeForUser(recipeID, request.session['user']['user_amazon_id'])
 
-    if not searchDBForSavedRecipe(recipeID, request.session['user']['user_amazon_id']):
-        addSavedRecipeForUser(recipeID, request.session['user']['user_amazon_id'])
-    else:
-        print("NOT SAVING RECIPE WITH USER")
+        # Get a dictionary for ingredients and directions from the URL
+        ingredientsDict = getIngredientsFromF2FURL(recipeIngredientsUrl)
+        ingredients = ingredientsDict['ingredients']
+        rawIngredientsAndDescription = ingredientsDict['rawIngredients']
 
-    ingredientsDict = getIngredientsFromF2FURL(recipeIngredientsUrl)
-    ingredients = ingredientsDict['ingredients']
-    rawIngredientsAndDescription = ingredientsDict['rawIngredients']
-
-    print("Parsed ingredients:", ingredients)
-    print("Raw ingredients:", rawIngredientsAndDescription)
-
-    for ingredient, rawDescription in zip(ingredients, rawIngredientsAndDescription):
-        savedIngredient = searchDBForSavedIngredient(ingredient)
-
-        if not savedIngredient:
-            addIngredientToDB(ingredient)
+        # Loop through two lists at the same time
+        for ingredient, rawDescription in zip(ingredients, rawIngredientsAndDescription):
             savedIngredient = searchDBForSavedIngredient(ingredient)
 
-        addIngredientToRecipe(recipeID, savedIngredient[0]['ingredient_id'], rawDescription)
+            if not savedIngredient:
+                addIngredientToDB(ingredient)
+                savedIngredient = searchDBForSavedIngredient(ingredient)
 
-    return HttpResponse()
+            addIngredientToRecipe(recipeID, savedIngredient[0]['ingredient_id'], rawDescription)
+
+        return HttpResponse()
 
 
 def getIngredientsFromF2FURL(ingreidentsURL):
-
     ingreidentsHTML = requests.get(ingreidentsURL).text
     # Pass the source html to BeautifulSoup
     htmlParser = BeautifulSoup(ingreidentsHTML, 'lxml')
@@ -156,6 +150,7 @@ def getIngredientsFromF2FURL(ingreidentsURL):
         # Only add to the list if the chunk doesn't have numbers or parenthesis
         # Some recipes will have the amounts with the ingredient, we don't need this for Amazon search
         for chunk in ingredientSplit:
+            # Can probs change to regex to make it more clean
             if not any(char.isdigit() or char is '(' or char is ')' for char in chunk):
                 ingredientList.append(chunk)
             else:
@@ -179,16 +174,6 @@ def getIngredientsFromF2FURL(ingreidentsURL):
     return {'ingredients': parsedIngredients, 'rawIngredients': rawIngredients}
 
 
-def searchDBCacheForSearch(searchTerm):
-    cursor = connection.cursor()
-    cursor.execute("""
-        SELECT
-            *
-        FROM
-            searchCache_tbl
-        WHERE
-            search_term = %s
-        """, [searchTerm])
-
-    return cursor.fetchone()
-
+def addToShoppingList(request):
+    if request.method == 'POST':
+        request.session['shopping_list'].append(request.POST.get('recipe_id'))

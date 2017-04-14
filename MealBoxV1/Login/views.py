@@ -158,4 +158,7 @@ d = json.loads(b.getvalue())
 print
 "%s %s %s" % (d['name'], d['email'], d['user_id'])
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

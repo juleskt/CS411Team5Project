@@ -5,8 +5,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import json
 from SecretConfigs import *
-from django.db import connection, connections
 from datetime import date, datetime
+from .searchAndAddSql import *
 from bs4 import BeautifulSoup
 
 # add to your views
@@ -99,8 +99,11 @@ def addRecipe(request):
     ingredients = ingredientsDict['ingredients']
     rawIngredientsAndDescription = ingredientsDict['rawIngredients']
 
-    print(ingredients)
-    print(rawIngredientsAndDescription)
+    print("Parsed ingredients:", ingredients)
+    print("Raw ingredients:", rawIngredientsAndDescription)
+
+   # for ingredient in ingredients:
+
 
     return HttpResponse()
 
@@ -151,163 +154,9 @@ def getIngredientsFromF2FURL(ingreidentsURL):
             ingredientList.pop(0)
         parsedIngredientsList.append(ingredientList)
 
-    # Combine the lists into space-separated words and remove everything after the comma character, if it exists
+    # Combine the lists into space-separated words and remove everything after the first comma character, if it exists
     # Add to final list
     for parsedIngredient in parsedIngredientsList:
-        parsedIngredients.append(' '.join(parsedIngredient).split(',')[0])
-
-    print(rawIngredients)
+        parsedIngredients.append(' '.join(parsedIngredient).split(',')[0].split('OR')[0].split('or')[0])
 
     return {'ingredients': parsedIngredients, 'rawIngredients': rawIngredients}
-
-def searchDBCacheForSearch(searchTerm):
-    cursor = connection.cursor()
-    cursor.execute(
-        """
-        SELECT
-            *
-        FROM
-            searchCache_tbl
-        WHERE
-            search_term = %s
-        """, [searchTerm]
-    )
-
-    return cursor.fetchone()
-
-
-def insertSearchIntoDBCache(searchTerm, jsonResult):
-    cursor = connection.cursor()
-    result = cursor.execute(
-        """
-        INSERT INTO
-            searchCache_tbl
-            (
-                search_term,
-                data_response,
-                page_num,
-                date_cached
-            )
-            VALUES
-            (
-                %s,
-                %s,
-                %s,
-                CURDATE()
-            )
-            
-        """, [searchTerm, json.dumps(jsonResult), 1]
-    )
-    
-    print("INSERT RESULT: ", result)
-
-
-def updateSearchIntoDBCache(searchTerm, jsonResult):
-    cursor = connection.cursor()
-    result = cursor.execute("""
-        UPDATE
-            searchCache_tbl
-        SET
-            data_response = %s,
-            page_num = %s,
-            date_cached = CURDATE()
-        WHERE
-          search_term = %s
-        """, [json.dumps(jsonResult), 1, searchTerm])
-
-    print("INSERT RESULT: ", result)
-
-
-def updateDataAndDateDBCache(searchTerm, jsonResult):
-    cursor = connection.cursor()
-    cursor.execute(
-    """
-    UPDATE
-        searchCache_tbl
-    SET
-        data_response=%s,
-        date_cached=CURDATE()
-    WHERE
-        search_term = %s
-    """, [jsonResult, searchTerm]
-    )
-
-
-def addRecipeToDB(recipeID, recipeName, recipeURL):
-    cursor = connections['users'].cursor()
-    result = cursor.execute(
-        """
-        INSERT INTO
-            Recipes_tbl
-            (
-                recipe_id,
-                recipe_title,
-                recipe_url,
-                recipe_source
-            )
-            VALUES
-            (
-                %s,
-                %s,
-                %s,
-                %s
-            )
-        """, [recipeID, recipeName, recipeURL, recipeURL])
-
-    print("INSERT RESULT: ", result)
-
-
-def searchDBForRecipe(recipeID):
-    cursor = connections['users'].cursor()
-    cursor.execute(
-        """
-        SELECT
-            *
-        FROM
-            Recipes_tbl
-        WHERE
-            recipe_id = %s
-        """, [recipeID])
-
-    # https://docs.djangoproject.com/en/1.10/topics/db/sql/
-    # Takes sql output and returns dictionary
-    columns = [col[0] for col in cursor.description]
-
-    return [dict(zip(columns, row)) for row in cursor.fetchall()]
-
-
-def searchDBForSavedRecipe(recipeID, userID):
-    cursor = connections['users'].cursor()
-    cursor.execute(
-        """
-        SELECT
-            *
-        FROM
-            Saved_recipe_tbl
-        WHERE
-            recipe_id = %s AND
-            user_id = %s
-        """, [recipeID, userID])
-
-    # https://docs.djangoproject.com/en/1.10/topics/db/sql/
-    # Takes sql output and returns dictionary
-    columns = [col[0] for col in cursor.description]
-
-    return [dict(zip(columns, row)) for row in cursor.fetchall()]
-
-
-def addSavedRecipeForUser(recipeID, userID):
-    cursor = connections['users'].cursor()
-    result = cursor.execute("""
-        INSERT INTO
-            Saved_recipe_tbl
-            (
-                recipe_id,
-                user_id
-            )
-            VALUES
-            (
-                %s,
-                %s
-            )
-        """, [recipeID, userID])

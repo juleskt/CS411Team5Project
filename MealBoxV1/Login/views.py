@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from SecretConfigs import *
+<<<<<<< Updated upstream
 import requests
 import Search.forms as searchForms
 from django.db import connection, connections
@@ -113,3 +114,48 @@ def addUserToDB(userData):
                 %s
             )
         """, [userData['user_id'], userData['name'], userData['email']])
+=======
+#from .forms import *
+# Create your views here.
+import pycurl
+import urllib
+import json
+import StringIO
+
+
+def index(request):
+    return render(request, 'login.html')
+
+
+
+b = StringIO.StringIO()
+
+# verify that the access token belongs to us
+c = pycurl.Curl()
+c.setopt(pycurl.URL, "https://api.amazon.com/auth/o2/tokeninfo?access_token=" + urllib.quote_plus(access_token))
+c.setopt(pycurl.SSL_VERIFYPEER, 1)
+c.setopt(pycurl.WRITEFUNCTION, b.write)
+
+c.perform()
+d = json.loads(b.getvalue())
+
+if d['aud'] != 'YOUR-CLIENT-ID':
+    # the access token does not belong to us
+    raise BaseException("Invalid Token")
+
+# exchange the access token for user profile
+b = StringIO.StringIO()
+
+c = pycurl.Curl()
+c.setopt(pycurl.URL, "https://api.amazon.com/user/profile")
+c.setopt(pycurl.HTTPHEADER, ["Authorization: bearer " + access_token])
+c.setopt(pycurl.SSL_VERIFYPEER, 1)
+c.setopt(pycurl.WRITEFUNCTION, b.write)
+
+c.perform()
+d = json.loads(b.getvalue())
+
+print
+"%s %s %s" % (d['name'], d['email'], d['user_id'])
+
+>>>>>>> Stashed changes

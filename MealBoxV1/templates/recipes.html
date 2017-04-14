@@ -66,18 +66,18 @@
     {% for recipe in recipes %}
     <div style='margin-bottom: 20px;'>
         <div style='width: 800px; height: 172px; margin:0 auto; border: 1px solid black;' background-color=#FFFFFF;>
-
+            console.log(recipe.recipe_url)
             <div style='width:150px; float: left;'>
                 <img
                     border="1"
-                    src={{ recipe.image_url }}
+                    src={{ recipe.recipe_url }}
                     width="170" height="170"
                 />
             </div>
 
             <div style='width: 600px; height: 150px; float: right; margin-left: 20px;'>
                 <h4 class="title">
-                    <a href='{{ recipe.source_url }}'>{{ recipe.title }}</a>
+                    <a href='{{ recipe.recipe_url }}'>{{ recipe.recipe_title }}</a>
                 </h4>
                 <div>
                     From: <a href='{{ recipe.publisher_url }}'>{{ recipe.publisher }}</a>
@@ -86,7 +86,7 @@
                     <a href='{{ recipe.f2f_url }}'> View Recipe </a>
                 </div>
                 <div>
-                    <h5>User Comments: {{ "It was terrible!!" }}</h5>
+                    <h5> href={{ recipe.notes }} </h5>
                 </div>
 
                 <div style='float: left'>

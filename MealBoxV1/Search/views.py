@@ -183,4 +183,9 @@ def getIngredientsFromF2FURL(ingreidentsURL):
 
 def addToShoppingList(request):
     if request.method == 'POST':
-        request.session['shopping_list'].append(request.POST.get('recipe_id'))
+        request.session['shopping_list'] = []
+        request.session['shopping_list'].append(request.POST.get('recipeID'))
+        #print("From request:", request.POST.get('recipe_id'))
+        print("From session:", request.session['shopping_list'])
+
+    return HttpResponse()

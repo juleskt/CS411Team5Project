@@ -200,3 +200,12 @@ def addIngredientToRecipe(recipeID, ingredientID, rawDescription):
         """, [recipeID, ingredientID, rawDescription])
 
     print("INSERT RESULT: ", result)
+
+def deleteSavedRecipeFromDB(recipeID,userID):
+    cursor = connections['users'].cursor()
+    result = cursor.execute("""
+            DELETE FROM
+                Saved_recipe_tbl
+            WHERE
+                recipe_id = %s AND user_id = %s
+            """, [recipeID, userID])

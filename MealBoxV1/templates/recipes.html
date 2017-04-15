@@ -25,7 +25,7 @@
     <div style='position:fixed; top: 0; width: 100%; z-index: 99'>
         <div class="navbar navbar-inverse" id="myNavbar">
             <div class="navbar-header">
-                <a href=''><img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px; margin-top:10px;'></a>
+                <a href='{% url 'search' %}'><img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px; margin-top:10px;'></a>
             </div>
 
             <ul class="nav navbar-nav">
@@ -66,7 +66,6 @@
     {% for recipe in recipes %}
     <div style='margin-bottom: 20px;'>
         <div style='width: 800px; height: 172px; margin:0 auto; border: 1px solid black;' background-color=#FFFFFF;>
-            console.log(recipe.recipe_url)
             <div style='width:150px; float: left;'>
                 <img
                     border="1"
@@ -77,16 +76,16 @@
 
             <div style='width: 600px; height: 150px; float: right; margin-left: 20px;'>
                 <h4 class="title">
-                    <a href='{{ recipe.recipe_url }}'>{{ recipe.recipe_title }}</a>
+                    <a href='{{ recipe.recipe_source }}'>{{ recipe.recipe_title }}</a>
                 </h4>
                 <div>
-                    From: <a href='{{ recipe.publisher_url }}'>{{ recipe.publisher }}</a>
+                    From: <a href='{{ recipe.recipe_source }}'>{{ recipe.recipe_source }}</a>
                 </div>
                 <div>
-                    <a href='{{ recipe.f2f_url }}'> View Recipe </a>
+                    <a href='{{ recipe.recipe_source }}'> View Recipe </a>
                 </div>
                 <div>
-                    <h5> href={{ recipe.notes }} </h5>
+                    <h5> Notes: {{ recipe.notes }} </h5>
                 </div>
 
                 <div style='float: left'>
@@ -105,9 +104,38 @@
                         </ul>
                     </div>
 
+                <div style='float: left'>
+                    &nbsp;
+                    <button type="submit" id="recipes-{{ recipe.recipe_id }}" class="btn btn-danger btn-sm">Delete</button>
+
+                </div>
+
             </div>
         </div>
     </div>
+        <script type="text/javascript">
+            $('#recipes-{{ recipe.recipe_id }}').click(function(e) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'delete-recipe' %}',
+                    data: {
+                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                        recipeID: '{{ recipe.recipe_id }}'
+                    }
+                });
+            });
+
+            $('#shopping-list-{{ recipe.recipe_id }}').click(function(e) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'add-to-shopping-list' %}',
+                    data: {
+                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                        recipeID: '{{ recipe.recipe_id }}'
+                    }
+                });
+            });
+        </script>
     {% endfor %}
 </body>
 </html>

@@ -113,6 +113,13 @@ def addRecipe(request):
 
             addIngredientToRecipe(recipeID, savedIngredient[0]['ingredient_id'], rawDescription)
 
+
+        return HttpResponse()
+
+def deleteRecipe(request):
+    if request.method == 'POST':
+        recipeID = request.POST.get('recipeID')
+        deleteSavedRecipeFromDB(recipeID, request.session['user']['user_amazon_id'])
         return HttpResponse()
 
 

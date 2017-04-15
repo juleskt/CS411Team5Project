@@ -85,12 +85,6 @@
     </p>
 
     <font color="white" style='margin-top: 70px'>Hi, {{ name }}! Welcome to MealBox.</font>
-
-    <form style = 'width:400px; height:100px' action="/search/" method="post">
-        {% csrf_token %}
-            {{ form }}
-        <input type="submit" name="searchField" value = 'Search Recipe'/>
-    </form>
 </body>
 
 </html>

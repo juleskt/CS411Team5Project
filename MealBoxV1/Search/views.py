@@ -183,7 +183,7 @@ def getIngredientsFromF2FURL(ingreidentsURL):
 
 def addToShoppingList(request):
     if request.method == 'POST':
-        if request.session['shopping_list'] is None:
+        if 'shopping_list' not in request.session:
             request.session['shopping_list'] = []
 
         request.session['shopping_list'] = request.session['shopping_list'] + [request.POST.get('recipeID')]

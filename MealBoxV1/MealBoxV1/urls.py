@@ -21,6 +21,7 @@ from Recipes import views as RecipesViews
 from ShoppingList import views as ListViews
 from django.conf import settings
 from django.conf.urls.static import static
+from Cart import views as CartViews
 
 urlpatterns = [
     url(r'^$', LoginViews.index, name='index'),
@@ -33,5 +34,6 @@ urlpatterns = [
     url(r'^delete-recipe', SearchViews.deleteRecipe, name='delete-recipe'),
     url(r'^shopping-list-from-search/$', SearchViews.addToShoppingList, name='add-to-shopping-list'),
     url(r'^my-recipes/$', RecipesViews.showrecipes, name='my-recipes'),
-    url(r'^my-shopping-list/$', ListViews.index, name='my-list')
+    url(r'^my-shopping-list/$', ListViews.index, name='my-list'),
+    url(r'^cart/$', CartViews.index, name='cart')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

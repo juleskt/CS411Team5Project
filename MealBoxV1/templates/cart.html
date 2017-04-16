@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-{% load static %}
- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results!</title>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
     {% load static %}
 
@@ -13,14 +17,31 @@
 
     {# Display django.contrib.messages as Bootstrap alerts #}
     {% bootstrap_messages %}
-<html lang="en">
-<meta charset="UTF-8">
-<head>
 
-    <div style='position:fixed; top: 0; width: 100%'>
+    <div id="amazon-root"></div>
+     <script type="text/javascript">
+
+        window.onAmazonLoginReady = function() {
+            amazon.Login.setClientId('amzn1.application-oa2-client.3841a328796f48d48add98af3e1bd6fa');
+        };
+
+        (function(d) {
+            var a = d.createElement('script'); a.type = 'text/javascript';
+            a.async = true; a.id = 'amazon-login-sdk';
+            a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+            d.getElementById('amazon-root').appendChild(a);
+        }) (document);
+    </script>
+
+</head>
+<body background-color=#D3D3D3; style='padding-bottom: 50px'>
+
+    <div style='position:fixed; top: 0; width: 100%; z-index: 99'>
         <div class="navbar navbar-inverse" id="myNavbar">
             <div class="navbar-header">
-                <a href=''><img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px; margin-top:10px;'></a>
+                <a href=''>
+                    <img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px; margin-top: 10px;'>
+                </a>
             </div>
 
             <ul class="nav navbar-nav">
@@ -42,52 +63,26 @@
             </div>
 
             <ul class="nav navbar-nav navbar-right">
+
                 <li>
                     <li><a href='{% url 'cart' %}'>Cart</a></li>
                 </li>
                 <li>
                     <a id="Logout" href="https://mealbox.pythonanywhere.com">
-                        <span class="glyphicon glyphicon-log-in"></span> 
+                        <span class="glyphicon glyphicon-log-in"></span>
                         Logout
                     </a>
                 </li>
             </ul>
-
         </div>
     </div>
 
-     <div id="amazon-root"></div>
-     <script type="text/javascript">
 
-        window.onAmazonLoginReady = function() {
-            amazon.Login.setClientId('amzn1.application-oa2-client.3841a328796f48d48add98af3e1bd6fa');
-        };
 
-        (function(d) {
-            var a = d.createElement('script'); a.type = 'text/javascript';
-            a.async = true; a.id = 'amazon-login-sdk';
-            a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
-            d.getElementById('amazon-root').appendChild(a);
-        }) (document);
-    </script>
-
-    <script type="text/javascript">
+</body>
+   <script type="text/javascript">
         document.getElementById('Logout').onclick = function() {
           amazon.Login.logout();
         };
-    </script>
-
-    <meta charset="UTF-8">
-    <title>Search</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/searchstyle.css' %}">
-</head>
-
-<body id='bg' style='background-image: url(' {% static 'css/searchstyle.css' %} ')'>
-    <p>
-        <img src="{% static 'img/logo.png' %}" style = 'width: 250px; height:100px; position: absolute; top:250px; left: 250px'>
-    </p>
-
-    <font color="white" style='margin-top: 70px'>Hi, {{ name }}! Welcome to MealBox.</font>
-</body>
-
+   </script>
 </html>

@@ -75,8 +75,57 @@
 
     <div style='margin-bottom:15px; margin-top: 75px'>
         <h1 class='title' style='width: 800px; margin: 0 auto'>
-            Results for {{ searchString }}:
+            Recipes in your Shopping List:
         </h1>
+    </div>
+
+    <div class="modal" id="ingredient-modal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modal-title"></h2>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button id="closeCharacterization" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin:0 auto; border: 1px solid black; width: 800px;">
+         {% for ingredients in ingredients_list %}
+             {% for ingredient in ingredients %}
+                <div style="text-align: center" id="ingredient-{{ ingredient.ingredient_id }}">
+                    <a data-toggle='modal' href='#'>{{ ingredient.ingredient_name }}</a>
+                </div>
+
+                <script type="text/javascript">
+                    $('#ingredient-{{ ingredient.ingredient_id }}').click(function(e) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '{% url 'lookup-ingredients-amazon' %}',
+                            data: {
+                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                ingredientName: '{{ ingredient.ingredient_name }}'
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                $('#modal-title').html(response["ingredient_name"]);
+                                console.log(response[0]);
+                                console.log(response);
+                               // $.each(data.ingredient_name, function() {
+                                //    $('#modal-title').append(data)
+                               // })
+                                $('#ingredient-modal').modal().show();
+                            }
+                         });
+                    });
+                </script>
+           {% endfor %}
+        {% endfor %}
     </div>
 
     {% for recipe in recipes %}

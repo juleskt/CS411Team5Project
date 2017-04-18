@@ -35,5 +35,6 @@ urlpatterns = [
     url(r'^shopping-list-from-search/$', SearchViews.addToShoppingList, name='add-to-shopping-list'),
     url(r'^my-recipes/$', RecipesViews.showrecipes, name='my-recipes'),
     url(r'^my-shopping-list/$', ListViews.index, name='my-list'),
+    url(r'^get-amazon-results/$', ListViews.getAmazonResultsForModal, name='lookup-ingredients-amazon'),
     url(r'^cart/$', CartViews.index, name='cart')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

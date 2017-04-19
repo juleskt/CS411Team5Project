@@ -66,9 +66,9 @@
                                 csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
                                 ingredientName: '{{ ingredient.ingredient_name }}'
                             },
-                            dataType: 'json',
+                           // dataType: 'json'
                             success: function(response) {
-                                $('#modal-title').html('Amazon products for: ' + response['ingredient_name']);
+                                /*$('#modal-title').html('Amazon products for: ' + response['ingredient_name']);
                                 //console.log(response[0])
                                 var html = "";
                                 $.each(response, function(product, productDetails) {
@@ -80,7 +80,7 @@
 
                                     console.log(productDetails)
                                 });
-                                $('#modal-body').html(html);
+                                $('#modal-body').html(html);*/
                                 $('#ingredient-modal').modal().show();
                             }
                          });

@@ -20,7 +20,7 @@
     <div style='position:fixed; top: 0; width: 100%; z-index: 99'>
         <div class="navbar navbar-inverse" id="myNavbar">
             <div class="navbar-header">
-                <a href=''>
+                <a href='{% url 'search' %}'>
                     <img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px; margin-top: 10px;'>
                 </a>
             </div>
@@ -44,6 +44,9 @@
             </div>
 
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                   <a href='{% url 'cart' %}'>Cart</a>
+                </li>
                 <li>
                     <a id="Logout" href="https://mealbox.pythonanywhere.com">
                         <span class="glyphicon glyphicon-log-in"></span>

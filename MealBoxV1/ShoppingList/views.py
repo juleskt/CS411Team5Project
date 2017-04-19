@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django import template
 import requests
 import json
 from amazon.api import AmazonAPI
@@ -37,7 +38,7 @@ def getAmazonResultsForModal(request):
         productData = {}
 
         for i, product in enumerate(products):
-            print (i, product.title, product.asin)
+           # print (i, product.title, product.asin)
 
             productData['result_number'] = i
             productData['product_title'] = product.title
@@ -48,5 +49,8 @@ def getAmazonResultsForModal(request):
             jsonProducts[i] = productData
             productData = {}
 
+        print(jsonProducts)
+
         #return HttpResponse(json.dumps({'ingredient_name': ingredient}), content_type='application/json')
-        return HttpResponse(json.dumps(jsonProducts), content_type='application/json')
+        #return HttpResponse(json.dumps(jsonProducts), content_type='application/json')
+        #return render(request, 'shoppingListModal.html', {'products': json.dumps(jsonProducts)})

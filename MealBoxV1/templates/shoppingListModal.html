@@ -24,7 +24,9 @@
                     <h2 class="modal-title" id="modal-title"></h2>
                 </div>
                 <div class="modal-body" id="modal-body">
-
+                    {% for product in products %}
+                        {{ product }}
+                    {% endfor %}
                 </div>
                 <div class="modal-footer">
                     <button id="closeAmazonIngredients" type="button" class="btn btn-default" data-dismiss="modal">Close</button>

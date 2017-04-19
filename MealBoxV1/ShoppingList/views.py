@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import requests
 import json
+from amazon.api import AmazonAPI
+from SecretConfigs import *
 
 # Create your views here.
 from Search.searchAndAddSql import *
@@ -26,6 +28,11 @@ def index(request):
 def getAmazonResultsForModal(request):
     if request.method == 'POST':
         ingredient = request.POST.get('ingredientName')
-        print("Ingredient for Amazon:", ingredient)
+
+        amazon = AmazonAPI(SecretConfigs.awsAccessKey(), SecretConfigs.awsSecretKey(), SecretConfigs.awsAssociateTag())
+        products = amazon.search(Keywords=ingredient, SearchIndex='All')
+
+        for i, product in enumerate(products):
+           print (i, product.title, product.asin)
 
         return HttpResponse(json.dumps({'ingredient_name': ingredient}), content_type='application/json')

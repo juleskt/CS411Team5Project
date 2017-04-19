@@ -2,15 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    {% load static %}
+
+    {# Load the tag library #}
+    {% load bootstrap3 %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
 </head>
 <body>
-    {% url 'index' as index %}
-    {% url 'search' as search %}
+    <div style='position:fixed; top: 0; width: 100%; z-index: 99'>
+        <div class="navbar navbar-inverse" id="myNavbar">
+            <div class="navbar-header">
+                <a href=''>
+                    <img src="{% static 'img/logo.png' %}" style = 'width: 75px; height:30px; margin-top: 10px;'>
+                </a>
+            </div>
 
-    <ul id="nav">
-        <li>{% block nav-home %}<a href="{% url index %}">Home</a>{% endblock %}</li>
-        <li>{% block nav-about %}<a href="{% url search %}">Search</a>{% endblock %}</li>
-    </ul>
+            <ul class="nav navbar-nav">
+                <li><a href='{% url 'search' %}'>Meals</a></li>
+                <li><a href='{% url 'my-recipes' %}'>Recipes</a></li>
+                <li><a href='{% url 'my-list' %}'>Shopping Lists</a></li>
+            </ul>
 
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search" action="/search/" method="post">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search Recipes" name="search" id="search">
+                        {% csrf_token %}
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a id="Logout" href="https://mealbox.pythonanywhere.com">
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>

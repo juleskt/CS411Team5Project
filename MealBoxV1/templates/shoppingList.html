@@ -85,11 +85,11 @@
                 <div class="modal-header">
                     <h2 class="modal-title" id="modal-title"></h2>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="modal-body">
 
                 </div>
                 <div class="modal-footer">
-                    <button id="closeCharacterization" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="closeAmazonIngredients" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -99,7 +99,7 @@
          {% for ingredients in ingredients_list %}
              {% for ingredient in ingredients %}
                 <div style="text-align: center" id="ingredient-{{ ingredient.ingredient_id }}">
-                    <a data-toggle='modal' href='#'>{{ ingredient.ingredient_name }}</a>
+                    <a data-toggle='modal'>{{ ingredient.ingredient_name }}</a>
                 </div>
 
                 <script type="text/javascript">
@@ -113,12 +113,18 @@
                             },
                             dataType: 'json',
                             success: function(response) {
-                                $('#modal-title').html(response["ingredient_name"]);
-                                console.log(response[0]);
-                                console.log(response);
-                               // $.each(data.ingredient_name, function() {
-                                //    $('#modal-title').append(data)
-                               // })
+                                $('#modal-title').html('Amazon products for: ' + response['ingredient_name']);
+                                //console.log(response[0])
+                                var html = "";
+                                $.each(response, function(product, productDetails) {
+                                    //$('#modal-title').append(data)
+                                    html+=
+                                        '<div>' +
+                                            productDetails['product_medium_image']
+                                        '</div>';
+                                    console.log(productDetails)
+                                });
+                                $('#modal-body').html(html);
                                 $('#ingredient-modal').modal().show();
                             }
                          });

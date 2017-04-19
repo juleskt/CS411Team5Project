@@ -30,9 +30,23 @@ def getAmazonResultsForModal(request):
         ingredient = request.POST.get('ingredientName')
 
         amazon = AmazonAPI(SecretConfigs.awsAccessKey(), SecretConfigs.awsSecretKey(), SecretConfigs.awsAssociateTag())
-        products = amazon.search(Keywords=ingredient, SearchIndex='All')
+        products = amazon.search(Keywords=ingredient, SearchIndex='All')#, ItemPage ='1')
+
+        jsonProducts = {}
+        jsonProducts['ingredient_name'] = ingredient
+        productData = {}
 
         for i, product in enumerate(products):
-           print (i, product.title, product.asin)
+            print (i, product.title, product.asin)
 
-        return HttpResponse(json.dumps({'ingredient_name': ingredient}), content_type='application/json')
+            productData['result_number'] = i
+            productData['product_title'] = product.title
+            productData['product_asin'] = product.asin
+            productData['product_medium_image'] = product.medium_image_url
+            productData['product_list_price'] = str(product.list_price)
+
+            jsonProducts[i] = productData
+            productData = {}
+
+        #return HttpResponse(json.dumps({'ingredient_name': ingredient}), content_type='application/json')
+        return HttpResponse(json.dumps(jsonProducts), content_type='application/json')

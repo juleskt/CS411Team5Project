@@ -4,20 +4,20 @@
             <div class="modal-header">
                 <h2 class="modal-title" id="modal-title">Showing Amazon products for: {{ ingredient_name }}</h2>
             </div>
-            <div class="modal-body" id="ingredients-modal-body" style="height: 450px; overflow-y: auto;">
+            <div class="modal-body" id="ingredients-modal-body" style="height: 450px; overflow-y: auto; overflow-x: auto">
                 {% for product in products %}
-                    <div style="margin-bottom: 20px; border-bottom: 1px solid black; height: 250px;">
+                    <div style="margin-bottom: 20px; border-bottom: 1px solid black; height: 250px; overflow: hidden">
                         <div style="float: left; height: 150px;">
                             <a href="{{ product.detail_page_url }}" target="_blank">
                                 <img
                                     border="1"
-                                    src={{ product.product_medium_image }}
+                                    src="{{ product.product_medium_image }}"
                                     width="170" height="170"
                                 />
                             </a>
                         </div>
-                        <div style="float: left; margin-left: 20px; height: 170px; position: relative">
-                            <div>
+                        <div style="float: left; margin-left: 20px; height: 170px; width: 600px; position: relative">
+                            <div style="display: inline-block">
                                 <a href="{{ product.detail_page_url }}" target="_blank">{{ product.product_title }}</a>
                             </div>
                             <div>

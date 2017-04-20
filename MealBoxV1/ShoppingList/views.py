@@ -47,7 +47,7 @@ def getAmazonResultsForModal(request):
             productData['result_number'] = i
             productData['product_title'] = product.title
             productData['product_asin'] = product.asin
-            productData['product_medium_image'] = product.medium_image_url
+            productData['product_medium_image'] = product.large_image_url
             productData['product_list_price'] = str(product.list_price)
             productData['product_brand'] = product.brand
             productData['product_formatted_price'] = product.formatted_price
@@ -94,3 +94,6 @@ def removeFromList(request):
 
     else:
         return Http404()
+
+def quickAddToCart(request):
+    return HttpResponse()

@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^my-recipes/$', RecipesViews.showrecipes, name='my-recipes'),
     url(r'^my-shopping-list/$', ListViews.index, name='my-list'),
     url(r'^remove-from-list/$', ListViews.removeFromList, name='remove-from-list'),
+    url(r'^quick-add-to-cart/$', ListViews.quickAddToCart, name='quick-add-to-cart'),
     url(r'^get-amazon-results/$', ListViews.getAmazonResultsForModal, name='lookup-ingredients-amazon'),
     url(r'^add-to-amazon-cart/$', ListViews.addToAmazonCart, name='add-to-amazon-cart'),
     url(r'^cart/$', CartViews.index, name='cart')

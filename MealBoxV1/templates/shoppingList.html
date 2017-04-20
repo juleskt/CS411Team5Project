@@ -50,14 +50,16 @@
         {% include 'shoppingListModal.html' %}
     </div>
 
-    <div style="margin:0 auto; width: 800px;">
+    <div style="margin:0 auto; width: 700px;">
          {% for ingredients in ingredients_list %}
-             <div style="border: 1px solid black; margin-bottom: 20px;">
+             <div style="border: 1px solid black; margin-bottom: 20px; overflow: hidden">
                  <div style="text-align: center; margin-top:20px;">
-                    {{ ingredients.0.recipe_title }}
+                     <h3 class="title">
+                         <a href="{{ ingredients.0.recipe_source }}" target="_blank">{{ ingredients.0.recipe_title }}</a>
+                     </h3>
                  </div>
                  <div>
-                     <div style="width: 300px; margin-left: 20px; margin-bottom: 20px; margin-top: 10px;">
+                     <div style="width: 300px; margin-left: 20px; margin-bottom: 20px; margin-top: 10px; float: left">
                         <a href="{{ ingredients.0.recipe_source }}" target="_blank">
                             <img
                                 border="1"
@@ -71,7 +73,7 @@
                             <button type='button' id='remove-from-list{{ ingredients.0.recipe_id }}' class='btn btn-primary btn-sm'>Remove from List</button>
                         </div>
                     </div>
-                    <div style="float:right; margin-right: 20px; width: 300px;">
+                    <div style="width: 300px; height: 250px; float: left; margin-top: 10px; overflow-y: auto">
                         {% for ingredient in ingredients %}
                             <div style="text-align: center" id="ingredient-{{ ingredient.ingredient_id }}">
                                 <a data-toggle='modal'>{{ ingredient.ingredient_name }}</a>
@@ -99,6 +101,17 @@
                                     $.ajax({
                                         type: 'POST',
                                         url: '{% url 'remove-from-list' %}',
+                                        data: {
+                                            csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                            recipeID: '{{ ingredients.0.recipe_id }}'
+                                        }
+                                     });
+                                });
+
+                                $('#quick-add-to-cart{{ ingredients.0.recipe_id }}').click(function(e) {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '{% url 'quick-add-to-cart' %}',
                                         data: {
                                             csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
                                             recipeID: '{{ ingredients.0.recipe_id }}'

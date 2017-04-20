@@ -1,38 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
-    {% load static %}
-
-    {# Load the tag library #}
-    {% load bootstrap3 %}
-
-    {# Load CSS and JavaScript #}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-
-    {# Display django.contrib.messages as Bootstrap alerts #}
-    {% bootstrap_messages %}
-</head>
-<body>
-    <div class="modal" id="ingredient-modal" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="modal-title"></h2>
-                </div>
-                <div class="modal-body" id="modal-body">
-                    {% for product in products %}
-                        {{ product }}
-                    {% endfor %}
-                </div>
-                <div class="modal-footer">
-                    <button id="closeAmazonIngredients" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+<div class="modal" id="ingredient-modal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">{{ ingredient_name }}</h2>
+            </div>
+            <div class="modal-body" id="ingredients-modal-body" style="height: 250px; overflow-y: auto;">
+                {% for product in products %}
+                    <div>
+                        {{ product.pro }}
+                        {{ product.product_title }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button id="closeAmazonIngredients" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-</body>
-</html>
+</div>

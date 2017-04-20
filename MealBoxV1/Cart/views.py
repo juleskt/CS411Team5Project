@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from Search.searchAndAddSql import *
 
 def index(request):
     recipeList = []

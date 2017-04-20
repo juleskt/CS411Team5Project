@@ -46,8 +46,12 @@
         </h1>
     </div>
 
-    <div id="modal">
+    <div id="modal-wrapper">
         {% include 'shoppingListModal.html' %}
+    </div>
+
+    <div id="someDiv">
+
     </div>
 
     <div style="margin:0 auto; border: 1px solid black; width: 800px;">
@@ -66,22 +70,13 @@
                                 csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
                                 ingredientName: '{{ ingredient.ingredient_name }}'
                             },
-                           // dataType: 'json'
+                            //dataType: 'json',
                             success: function(response) {
-                                /*$('#modal-title').html('Amazon products for: ' + response['ingredient_name']);
-                                //console.log(response[0])
-                                var html = "";
-                                $.each(response, function(product, productDetails) {
-                                    //$('#modal-title').append(data)
-                                    html+=
-                                        '<div>' +
-                                            productDetails['medium_image_url'] +
-                                        '</div>';
-
-                                    console.log(productDetails)
+                                $(document).ready(function() {
+                                    console.log(response);
+                                    $('#modal-wrapper').html(response);
+                                    $('#ingredient-modal').modal().show();
                                 });
-                                $('#modal-body').html(html);*/
-                                $('#ingredient-modal').modal().show();
                             }
                          });
                     });

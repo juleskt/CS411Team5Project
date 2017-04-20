@@ -46,7 +46,7 @@ def handleLogin(request):
             raise BaseException("Invalid Token")
 
         # Store the access token in the session
-        request.session['amazonAcessToken'] = accessRequestJSON
+        request.session['amazonAccessToken'] = accessRequestJSON
 
         # exchange the access token for user profile
         userProfileUrl = 'https://api.amazon.com/user/profile'
@@ -58,11 +58,9 @@ def handleLogin(request):
         userFromDB = searchUsersDB(userProfile)
 
         # If not, add them and grab their info
-        if userFromDB is None:
+        if not userFromDB:
             addUserToDB(userProfile)
             userFromDB = searchUsersDB(userProfile)
-
-        print(userFromDB[0])
 
         request.session['user'] = userFromDB[0]
 
@@ -76,7 +74,8 @@ def handleLogin(request):
 # user_amazon id | user_name | email | zip_code | phone_number
 def searchUsersDB(userData):
     cursor = connections['users'].cursor()
-    cursor.execute("""
+    cursor.execute(
+        """
         SELECT
             *
         FROM
@@ -95,9 +94,11 @@ def searchUsersDB(userData):
         for row in cursor.fetchall()
     ]
 
+
 def addUserToDB(userData):
     cursor = connections['users'].cursor()
-    result = cursor.execute("""
+    result = cursor.execute(
+        """
         INSERT INTO
             Users_tbl
             (
@@ -111,6 +112,4 @@ def addUserToDB(userData):
                 %s,
                 %s
             )
-
         """, [userData['user_id'], userData['name'], userData['email']])
-

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results!</title>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    {% load static %}
+
+    {# Load the tag library #}
+    {% load bootstrap3 %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
+    <div id="amazon-root"></div>
+     <script type="text/javascript">
+
+        window.onAmazonLoginReady = function() {
+            amazon.Login.setClientId('amzn1.application-oa2-client.3841a328796f48d48add98af3e1bd6fa');
+        };
+
+        (function(d) {
+            var a = d.createElement('script'); a.type = 'text/javascript';
+            a.async = true; a.id = 'amazon-login-sdk';
+            a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+            d.getElementById('amazon-root').appendChild(a);
+        }) (document);
+    </script>
+
+</head>
+<body background-color=#D3D3D3; style='padding-bottom: 50px'>
+
+    <div id="navbar">
+        {% include 'base.html' %}
+    </div>
+
+
+<a href={{ purchase_url }} class="btn btn-default" style="background-color:yellow;margin-left:auto;margin-right:auto;display:block;margin-top:22%;margin-bottom:0%">Proceed to Checkout</a>
+
+</body>
+   <script type="text/javascript">
+        document.getElementById('Logout').onclick = function() {
+          amazon.Login.logout();
+        };
+   </script>
+</html>

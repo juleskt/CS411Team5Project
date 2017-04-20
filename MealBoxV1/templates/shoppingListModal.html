@@ -27,13 +27,13 @@
                                 {{ product.product_formatted_price }}
                             </div>
                             <div style="position: absolute; bottom: 0;">
-                                <button type='button' id='add-to-cart-offer-id-{{ product.product_offer_id }}' class='btn btn-primary btn-sm'>Add to Cart</button>
+                                <button type='button' id='add-to-cart-offer-id-{{ product.product_asin }}' class='btn btn-primary btn-sm'>Add to Cart</button>
                             </div>
                         </div>
                     </div>
 
                      <script type="text/javascript">
-                        $('#add-to-cart-asin-{{ product.product_offer_id }}').click(function(e) {
+                        $('#add-to-cart-offer-id-{{ product.product_asin }}').click(function(e) {
                             $.ajax({
                                 type: 'POST',
                                 url: '{% url 'add-to-amazon-cart' %}',

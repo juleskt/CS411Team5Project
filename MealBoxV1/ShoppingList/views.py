@@ -16,7 +16,7 @@ from Search.searchAndAddSql import *
 def index(request):
     ingredientsList = []
 
-    if 'shopping_list' not in request.session:
+    if request.session.get('shopping_list') is None:
         request.session['shopping_list'] = []
     else:
         request.session['shopping_list'] = list(set(request.session['shopping_list']))
@@ -72,6 +72,23 @@ def addToAmazonCart(request):
     if request.method == 'POST':
         productASIN = request.POST.get('amazonOfferID')
         print(productASIN)
+
+        return HttpResponse()
+
+    else:
+        return Http404()
+
+
+def removeFromList(request):
+    if request.method == 'POST':
+        recipeIDToRemove = request.POST.get('recipeID')
+
+        print("Recipe ID to remove from shopping list:", recipeIDToRemove)
+
+        if request.session.get('shopping_list') is not None:
+            print("Shopping list before remove:", request.session['shopping_list'])
+            request.session['shopping_list'].remove(recipeIDToRemove)
+            print("Shopping list after remove:", request.session['shopping_list'])
 
         return HttpResponse()
 

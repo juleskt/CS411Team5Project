@@ -43,28 +43,32 @@ def getAmazonResultsForModal(request):
         #jsonProducts['ingredient_name'] = ingredient
         productData = {}
 
-        for i, product in enumerate(products):
-            productData['result_number'] = i
-            productData['product_title'] = product.title
-            productData['product_asin'] = product.asin
-            productData['product_medium_image'] = product.large_image_url
-            productData['product_list_price'] = str(product.list_price)
-            productData['product_brand'] = product.brand
-            productData['product_formatted_price'] = product.formatted_price
-            productData['detail_page_url'] = product.detail_page_url
-            productData['product_offer_id'] = product.offer_id
-            productData['product_reviews'] = product.reviews[1]
+        try:
+            for i, product in enumerate(products):
+                productData['result_number'] = i
+                productData['product_title'] = product.title
+                productData['product_asin'] = product.asin
+                productData['product_medium_image'] = product.large_image_url
+                productData['product_list_price'] = str(product.list_price)
+                productData['product_brand'] = product.brand
+                productData['product_formatted_price'] = product.formatted_price
+                productData['detail_page_url'] = product.detail_page_url
+                productData['product_offer_id'] = product.offer_id
+                productData['product_reviews'] = product.reviews[1]
 
-            jsonProducts.append(productData)
-            productData = {}
+                jsonProducts.append(productData)
+                productData = {}
 
-        jsonWrapper = {}
-        jsonWrapper['products'] = jsonProducts
-        jsonWrapper['ingredient_name'] = ingredient
+            jsonWrapper = {}
+            jsonWrapper['products'] = jsonProducts
+            jsonWrapper['ingredient_name'] = ingredient
 
-        print(jsonWrapper)
+            print(jsonWrapper)
 
-        return render(request, 'shoppingListModal.html', {'products': jsonWrapper['products'], 'ingredient_name': ingredient})
+            return render(request, 'shoppingListModal.html', {'products': jsonWrapper['products'], 'ingredient_name': ingredient})
+
+        except:
+            return render(request, 'shoppingListModal.html', {'error': True})
     else:
       return Http404()
 
@@ -83,8 +87,6 @@ def addToAmazonCart(request):
 def removeFromList(request):
     if request.method == 'POST':
         recipeIDToRemove = request.POST.get('recipeID')
-
-        print("Recipe ID to remove from shopping list:", recipeIDToRemove)
 
         if request.session.get('shopping_list') is not None:
             print("Shopping list before remove:", request.session['shopping_list'])

@@ -33,6 +33,10 @@
         }) (document);
     </script>
 
+    <div id="modal-wrapper">
+        {% include 'shoppingListModal.html' %}
+    </div>
+
 </head>
 <body background-color=#D3D3D3; style='padding-bottom: 50px'>
 
@@ -44,10 +48,6 @@
         <h1 class='title' style='width: 800px; margin: 0 auto'>
             Recipes in your Shopping List:
         </h1>
-    </div>
-
-    <div id="modal-wrapper">
-        {% include 'shoppingListModal.html' %}
     </div>
 
     <div style="margin:0 auto; width: 700px;">
@@ -70,7 +70,7 @@
 
                         <div style="margin-top: 10px;">
                             <button type='button' id='quick-add-to-cart{{ ingredients.0.recipe_id }}' class='btn btn-primary btn-sm'>Quick Add to Cart</button>
-                            <button type='button' id='remove-from-list{{ ingredients.0.recipe_id }}' class='btn btn-primary btn-sm'>Remove from List</button>
+                            <button type='button' id='remove-from-list{{ ingredients.0.recipe_id }}' class='btn btn-danger btn-sm'>Remove from List</button>
                         </div>
                     </div>
                     <div style="width: 300px; float: left; margin-bottom: 30px;">

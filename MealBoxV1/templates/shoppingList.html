@@ -50,33 +50,35 @@
         {% include 'shoppingListModal.html' %}
     </div>
 
-    <div style="margin:0 auto; border: 1px solid black; width: 800px;">
+    <div style="margin:0 auto; width: 800px;">
          {% for ingredients in ingredients_list %}
-             {% for ingredient in ingredients %}
-                <div style="text-align: center" id="ingredient-{{ ingredient.ingredient_id }}">
-                    <a data-toggle='modal'>{{ ingredient.ingredient_name }}</a>
-                </div>
+             <div style="border: 1px solid black; margin-bottom: 20px;">
+                 {{ ingredients.0.recipe_title }}
+                 {% for ingredient in ingredients %}
+                    <div style="text-align: center" id="ingredient-{{ ingredient.ingredient_id }}">
+                        <a data-toggle='modal'>{{ ingredient.ingredient_name }}</a>
+                    </div>
 
-                <script type="text/javascript">
-                    $('#ingredient-{{ ingredient.ingredient_id }}').click(function(e) {
-                        $.ajax({
-                            type: 'POST',
-                            url: '{% url 'lookup-ingredients-amazon' %}',
-                            data: {
-                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                                ingredientName: '{{ ingredient.ingredient_name }}'
-                            },
-                            success: function(response) {
-                                $(document).ready(function() {
-                                    console.log(response);
-                                    $('#modal-wrapper').html(response);
-                                    $('#ingredient-modal').modal().show();
-                                });
-                            }
-                         });
-                    });
-                </script>
-           {% endfor %}
+                    <script type="text/javascript">
+                        $('#ingredient-{{ ingredient.ingredient_id }}').click(function(e) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '{% url 'lookup-ingredients-amazon' %}',
+                                data: {
+                                    csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                    ingredientName: '{{ ingredient.ingredient_name }}'
+                                },
+                                success: function(response) {
+                                    $(document).ready(function() {
+                                        $('#modal-wrapper').html(response);
+                                        $('#ingredient-modal').modal().show();
+                                    });
+                                }
+                             });
+                        });
+                    </script>
+                 {% endfor %}
+             </div>
         {% endfor %}
     </div>
 

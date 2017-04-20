@@ -48,7 +48,9 @@ def getAmazonResultsForModal(request):
             productData['product_title'] = product.title
             productData['product_asin'] = product.asin
             productData['product_medium_image'] = product.medium_image_url
-            productData['product_list_price'] = product.list_price[0]
+            productData['product_list_price'] = str(product.list_price)
+            productData['product_brand'] = product.brand
+            productData['product_formatted_price'] = product.formatted_price
             productData['detail_page_url'] = product.detail_page_url
             productData['offer_url'] = product.offer_url
 

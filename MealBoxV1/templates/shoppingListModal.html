@@ -16,12 +16,18 @@
                                 />
                             </a>
                         </div>
-                        <div style="float: left; margin-left: 20px;">
+                        <div style="float: left; margin-left: 20px; height: 170px; position: relative">
                             <div>
-                                {{ product.product_title }}
+                                <a href="{{ product.detail_page_url }}" target="_blank">{{ product.product_title }}</a>
                             </div>
                             <div>
-                                ${{ product.product_list_price }}
+                                From {{ product.product_brand }}
+                            </div>
+                            <div>
+                                {{ product.product_formatted_price }}
+                            </div>
+                            <div style="position: absolute; bottom: 0;">
+                                <button type='button' id='amazon-asin-{{ product.product_asin }}' class='btn btn-primary btn-sm'>Add to Cart</button>
                             </div>
                         </div>
                     </div>

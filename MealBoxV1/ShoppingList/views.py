@@ -53,6 +53,7 @@ def getAmazonResultsForModal(request):
             productData['product_formatted_price'] = product.formatted_price
             productData['detail_page_url'] = product.detail_page_url
             productData['product_offer_id'] = product.offer_id
+            productData['product_reviews'] = product.reviews[1]
 
             jsonProducts.append(productData)
             productData = {}

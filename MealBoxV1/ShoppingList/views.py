@@ -52,7 +52,7 @@ def getAmazonResultsForModal(request):
             productData['product_brand'] = product.brand
             productData['product_formatted_price'] = product.formatted_price
             productData['detail_page_url'] = product.detail_page_url
-            productData['offer_url'] = product.offer_url
+            productData['product_offer_id'] = product.offer_id
 
             jsonProducts.append(productData)
             productData = {}
@@ -70,7 +70,7 @@ def getAmazonResultsForModal(request):
 
 def addToAmazonCart(request):
     if request.method == 'POST':
-        productASIN = request.POST.get('amazonASIN')
+        productASIN = request.POST.get('amazonOfferID')
         print(productASIN)
 
         return HttpResponse()

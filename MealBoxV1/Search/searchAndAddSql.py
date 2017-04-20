@@ -68,7 +68,7 @@ def updateDataAndDateDBCache(searchTerm, jsonResult):
         """, [jsonResult, searchTerm])
 
 
-def addRecipeToDB(recipeID, recipeName, recipeURL):
+def addRecipeToDB(recipeID, recipeName, recipeURL, recipeImgURL):
     cursor = connections['users'].cursor()
     result = cursor.execute("""
         INSERT INTO
@@ -86,7 +86,7 @@ def addRecipeToDB(recipeID, recipeName, recipeURL):
                 %s,
                 %s
             )
-        """, [recipeID, recipeName, recipeURL, recipeURL])
+        """, [recipeID, recipeName, recipeImgURL, recipeURL])
 
     print("INSERT RESULT: ", result)
 
@@ -200,3 +200,38 @@ def addIngredientToRecipe(recipeID, ingredientID, rawDescription):
         """, [recipeID, ingredientID, rawDescription])
 
     print("INSERT RESULT: ", result)
+
+
+def deleteSavedRecipeFromDB(recipeID,userID):
+    cursor = connections['users'].cursor()
+    result = cursor.execute("""
+            DELETE FROM
+                Saved_recipe_tbl
+            WHERE
+                recipe_id = %s AND user_id = %s
+            """, [recipeID, userID])
+
+
+def getIngredientsFromRecipeID(recipeID):
+    cursor = connections['users'].cursor()
+    result = cursor.execute("""
+                SELECT
+                    *
+                FROM
+                  Recipe_ingredient_tbl
+                INNER JOIN
+                  Ingredient_tbl 
+                  ON
+                    Recipe_ingredient_tbl.ingredient_id = Ingredient_tbl.ingredient_id
+                INNER JOIN
+                  Recipes_tbl
+                  ON 
+                  Recipes_tbl.recipe_id = Recipe_ingredient_tbl.recipe_id
+                WHERE 
+                  Recipe_ingredient_tbl.recipe_id = %s
+
+                """, [recipeID])
+
+    columns = [col[0] for col in cursor.description]
+
+    return [dict(zip(columns, row)) for row in cursor.fetchall()]

@@ -1,0 +1,60 @@
+<div class="modal" id="ingredient-modal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Showing Amazon products for: {{ ingredient_name }}</h2>
+            </div>
+            <div class="modal-body" id="ingredients-modal-body" style="height: 450px; overflow-y: auto; overflow-x: auto">
+                {% if error == True %}
+                    There doesn't seem to be any items :(
+                {% endif %}
+                {% for product in products %}
+                    <div style="margin-bottom: 20px; border-bottom: 1px solid black; height: 250px; overflow: hidden">
+                        <div style="float: left; height: 150px;">
+                            <a href="{{ product.detail_page_url }}" target="_blank">
+                                <img
+                                    border="1"
+                                    src="{{ product.product_medium_image }}"
+                                    width="170" height="170"
+                                />
+                            </a>
+                        </div>
+                        <div style="float: left; margin-left: 20px; height: 170px; width: 600px; position: relative">
+                            <div style="display: inline-block">
+                                <a href="{{ product.detail_page_url }}" target="_blank">{{ product.product_title }}</a>
+                            </div>
+                            <div>
+                                From {{ product.product_brand }}
+                            </div>
+                            <div>
+                                {{ product.product_formatted_price }}
+                            </div>
+                            <div>
+                                <a href="{{ product.product_reviews }}" target="_blank">See Reviews</a>
+                            </div>
+                            <div style="position: absolute; bottom: 0;">
+                                <button type='button' id='add-to-cart-offer-id-{{ product.product_asin }}' class='btn btn-primary btn-sm'>Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                     <script type="text/javascript">
+                        $('#add-to-cart-offer-id-{{ product.product_asin }}').click(function(e) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '{% url 'add-to-amazon-cart' %}',
+                                data: {
+                                    csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                    amazonOfferID: '{{ product.product_offer_id }}'
+                                }
+                            });
+                        });
+                    </script>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button id="closeAmazonIngredients" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

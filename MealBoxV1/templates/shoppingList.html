@@ -73,53 +73,58 @@
                             <button type='button' id='remove-from-list{{ ingredients.0.recipe_id }}' class='btn btn-primary btn-sm'>Remove from List</button>
                         </div>
                     </div>
-                    <div style="width: 300px; height: 250px; float: left; margin-top: 10px; overflow-y: auto">
-                        {% for ingredient in ingredients %}
-                            <div style="text-align: center" id="ingredient-{{ ingredient.ingredient_id }}">
-                                <a data-toggle='modal'>{{ ingredient.ingredient_name }}</a>
-                            </div>
+                    <div style="width: 300px; float: left; margin-bottom: 30px;">
+                        <div style="text-align: center; margin-top:20px;">
+                            <h4 class="title">Ingredients</h4>
+                        </div>
+                        <div style="width: 300px; height: 235px; margin-top: 10px; overflow-y: auto">
+                            {% for ingredient in ingredients %}
+                                <div style="text-align: center" id="ingredient-{{ ingredient.ingredient_id }}">
+                                    <a data-toggle='modal'>{{ ingredient.ingredient_name }}</a>
+                                </div>
 
-                            <script type="text/javascript">
-                                $('#ingredient-{{ ingredient.ingredient_id }}').click(function(e) {
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: '{% url 'lookup-ingredients-amazon' %}',
-                                        data: {
-                                            csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                                            ingredientName: '{{ ingredient.ingredient_name }}'
-                                        },
-                                        success: function(response) {
-                                            $(document).ready(function() {
-                                                $('#modal-wrapper').html(response);
-                                                $('#ingredient-modal').modal().show();
-                                            });
-                                        }
-                                     });
-                                });
+                                <script type="text/javascript">
+                                    $('#ingredient-{{ ingredient.ingredient_id }}').click(function(e) {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '{% url 'lookup-ingredients-amazon' %}',
+                                            data: {
+                                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                                ingredientName: '{{ ingredient.ingredient_name }}'
+                                            },
+                                            success: function(response) {
+                                                $(document).ready(function() {
+                                                    $('#modal-wrapper').html(response);
+                                                    $('#ingredient-modal').modal().show();
+                                                });
+                                            }
+                                         });
+                                    });
 
-                                $('#remove-from-list{{ ingredients.0.recipe_id }}').click(function(e) {
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: '{% url 'remove-from-list' %}',
-                                        data: {
-                                            csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                                            recipeID: '{{ ingredients.0.recipe_id }}'
-                                        }
-                                     });
-                                });
+                                    $('#remove-from-list{{ ingredients.0.recipe_id }}').click(function(e) {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '{% url 'remove-from-list' %}',
+                                            data: {
+                                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                                recipeID: '{{ ingredients.0.recipe_id }}'
+                                            }
+                                         });
+                                    });
 
-                                $('#quick-add-to-cart{{ ingredients.0.recipe_id }}').click(function(e) {
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: '{% url 'quick-add-to-cart' %}',
-                                        data: {
-                                            csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                                            recipeID: '{{ ingredients.0.recipe_id }}'
-                                        }
-                                     });
-                                });
-                            </script>
-                         {% endfor %}
+                                    $('#quick-add-to-cart{{ ingredients.0.recipe_id }}').click(function(e) {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '{% url 'quick-add-to-cart' %}',
+                                            data: {
+                                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                                recipeID: '{{ ingredients.0.recipe_id }}'
+                                            }
+                                         });
+                                    });
+                                </script>
+                             {% endfor %}
+                        </div>
                     </div>
                  </div>
              </div>

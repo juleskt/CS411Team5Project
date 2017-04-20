@@ -1,11 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
-from django import template
-import json
+from django.http import HttpResponse, Http404, HttpResponseRedirect, HttpRequest
 from amazon.api import AmazonAPI
 from SecretConfigs import *
-from django.template.loader_tags import BlockNode, ExtendsNode
-from django.template import loader, Context, RequestContext
 from django import template
 
 register = template.Library()
@@ -85,15 +81,20 @@ def addToAmazonCart(request):
 
 
 def removeFromList(request):
+
     if request.method == 'POST':
         recipeIDToRemove = request.POST.get('recipeID')
 
-        if request.session.get('shopping_list') is not None:
-            print("Shopping list before remove:", request.session['shopping_list'])
-            request.session['shopping_list'].remove(recipeIDToRemove)
-            print("Shopping list after remove:", request.session['shopping_list'])
+        try:
+            if request.session.get('shopping_list') is not None:
+                print("Shopping list before remove:", request.session['shopping_list'])
+                request.session['shopping_list'].remove(recipeIDToRemove)
+                print("Shopping list after remove:", request.session['shopping_list'])
+        except:
+            return index(request)
 
-        return HttpResponse()
+
+        return index(request)
 
     else:
         return Http404()

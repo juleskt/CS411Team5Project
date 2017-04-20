@@ -2,6 +2,9 @@ from django.shortcuts import render
 import requests
 from django.db import connection, connections
 import json
+from Search.searchAndAddSql import *
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 # Create your views here.
 
@@ -27,5 +30,17 @@ def showrecipes(request):
     dictionary = [dict(zip(columns, row)) for row in cursor.fetchall()]
     print(dictionary)
     return render(request, 'recipes.html', {'recipes': dictionary})
+
+
+def deleteRecipe(request):
+    if request.method == 'POST':
+        recipeID = request.POST.get('recipeID')
+        deleteSavedRecipeFromDB(recipeID, request.session['user']['user_amazon_id'])
+
+        url = reverse('my-recipes')
+        return HttpResponseRedirect(url)
+
+    else:
+        return Http404()
 
 

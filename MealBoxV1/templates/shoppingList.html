@@ -45,8 +45,12 @@
     </div>
 
     <div style='margin-bottom:15px; margin-top: 75px'>
-        <h1 class='title' style='width: 800px; margin: 0 auto'>
+        <h1 class='title' style='width: 550px; margin: 0 auto'>
             Recipes in your Shopping List:
+            <a class="glyphicon glyphicon-info-sign" style="float: right; font-size: 0.4em; margin-right:45px; cursor: pointer"
+               data-toggle="tooltip" data-placement="right"
+               title="Add individual ingredients to the cart or quick add them in bulk!">
+            </a>
         </h1>
     </div>
 
@@ -80,7 +84,7 @@
                         <div style="width: 300px; height: 235px; margin-top: 10px; overflow-y: auto">
                             {% for ingredient in ingredients %}
                                 <div style="text-align: center" id="ingredient-{{ ingredient.ingredient_id }}">
-                                    <a data-toggle='modal'>{{ ingredient.ingredient_name }}</a>
+                                    <a data-toggle='modal' style="cursor: pointer;">{{ ingredient.ingredient_name }}</a>
                                 </div>
 
                                 <script type="text/javascript">
@@ -135,5 +139,10 @@
         document.getElementById('Logout').onclick = function() {
           amazon.Login.logout();
         };
+
+        // Enable tooltips
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+}       )
    </script>
 </html>

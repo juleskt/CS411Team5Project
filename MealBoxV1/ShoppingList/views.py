@@ -44,13 +44,13 @@ def getAmazonResultsForModal(request):
         productData = {}
 
         for i, product in enumerate(products):
-           # print (i, product.title, product.asin)
-
             productData['result_number'] = i
             productData['product_title'] = product.title
             productData['product_asin'] = product.asin
             productData['product_medium_image'] = product.medium_image_url
-            productData['product_list_price'] = str(product.list_price)
+            productData['product_list_price'] = product.list_price[0]
+            productData['detail_page_url'] = product.detail_page_url
+            productData['offer_url'] = product.offer_url
 
             jsonProducts.append(productData)
             productData = {}

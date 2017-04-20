@@ -50,10 +50,6 @@
         {% include 'shoppingListModal.html' %}
     </div>
 
-    <div id="someDiv">
-
-    </div>
-
     <div style="margin:0 auto; border: 1px solid black; width: 800px;">
          {% for ingredients in ingredients_list %}
              {% for ingredient in ingredients %}
@@ -70,7 +66,6 @@
                                 csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
                                 ingredientName: '{{ ingredient.ingredient_name }}'
                             },
-                            //dataType: 'json',
                             success: function(response) {
                                 $(document).ready(function() {
                                     console.log(response);

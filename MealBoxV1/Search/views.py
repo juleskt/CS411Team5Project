@@ -5,12 +5,11 @@ from SecretConfigs import *
 from bs4 import BeautifulSoup
 from datetime import date, datetime
 from django.db import connection, connections
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render, redirect
 
 from .searchAndAddSql import *
 from .forms import ContactForm, SearchForm, SearchResult
-
 
 # add to your views
 def contact(request):
@@ -113,8 +112,10 @@ def addRecipe(request):
 
             addIngredientToRecipe(recipeID, savedIngredient[0]['ingredient_id'], rawDescription)
 
-
         return HttpResponse()
+
+    else:
+        return Http404()
 
 def deleteRecipe(request):
     if request.method == 'POST':
@@ -122,6 +123,8 @@ def deleteRecipe(request):
         deleteSavedRecipeFromDB(recipeID, request.session['user']['user_amazon_id'])
         return HttpResponse()
 
+    else:
+        return Http404()
 
 def getIngredientsFromF2FURL(ingreidentsURL):
     ingreidentsHTML = requests.get(ingreidentsURL).text
@@ -188,4 +191,7 @@ def addToShoppingList(request):
 
         request.session['shopping_list'] = request.session['shopping_list'] + [request.POST.get('recipeID')]
 
-    return HttpResponse()
+        return HttpResponse()
+
+    else:
+        return Http404()

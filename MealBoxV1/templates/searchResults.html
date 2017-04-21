@@ -36,9 +36,7 @@
 </head>
 <body background-color=#D3D3D3; style='padding-bottom: 50px'>
 
-   <div id="navbar">
-        {% include 'base.html' %}
-    </div>
+    {% include 'base.html' %}
 
     <div style='margin-bottom:15px; margin-top: 75px'>
         <h1 class='title' style='width: 800px; margin: 0 auto'>
@@ -123,13 +121,15 @@
             });
         </script>
 
-
     {% endfor %}
 
+
+{% include 'footer.html' %}
 </body>
-   <script type="text/javascript">
-        document.getElementById('Logout').onclick = function() {
-          amazon.Login.logout();
-        };
-   </script>
+
+<script type="text/javascript">
+    document.getElementById('Logout').onclick = function() {
+      amazon.Login.logout();
+    };
+</script>
 </html>

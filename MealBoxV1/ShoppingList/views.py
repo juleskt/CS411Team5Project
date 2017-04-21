@@ -33,7 +33,7 @@ def getAmazonResultsForModal(request):
         ingredient = request.POST.get('ingredientName')
 
         amazon = AmazonAPI(SecretConfigs.awsAccessKey(), SecretConfigs.awsSecretKey(), SecretConfigs.awsAssociateTag())
-        products = amazon.search(Keywords=ingredient, SearchIndex='All')#, ItemPage ='1')
+        products = amazon.search_n(10, Keywords=ingredient, SearchIndex='GourmetFood')#, ItemPage ='1')
 
         jsonProducts = []
         #jsonProducts['ingredient_name'] = ingredient

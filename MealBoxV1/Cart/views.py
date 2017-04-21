@@ -11,19 +11,21 @@ def index(request):
 
 
 def addtocart(request):
-    print("INSIDE ADD TO CART")
-    offerID = request.POST.GET('offerID')
-    print("INSIDE ADD TO CART")
+    offerID = request.POST.get('offerID')
     print("INCOMING OFFER ID:", offerID)
     item = {'offer_id': offerID, 'quantity': 1}
+
     if 'cartID' not in request.session or 'carthmac' not in request.session:
+        print("CART DOESN'T EXIST")
         cart = amazon.cart_create(item)
         request.session['cartID'] = cart.cart_id
         request.session['carthmac'] = cart.hmac
         print(str(request.session['cartID']) + "cart" + str(request.session['carthmac']))
     else:
+        print("CART EXISTS")
         cart = amazon.cart_get(request.session['cartID'], request.session['carthmac'])
         if item not in cart:
-            amazon.cart_add(newitem, request.session['cartID'], request.session['carthmac'])
+            amazon.cart_add(item, request.session['cartID'], request.session['carthmac'])
+        print("CART EXISTS")
         print(str(request.session['cartID']) + "cart" + str(request.session['carthmac']))
 

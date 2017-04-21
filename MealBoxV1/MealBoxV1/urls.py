@@ -40,5 +40,6 @@ urlpatterns = [
     url(r'^quick-add-to-cart/$', ListViews.quickAddToCart, name='quick-add-to-cart'),
     url(r'^get-amazon-results/$', ListViews.getAmazonResultsForModal, name='lookup-ingredients-amazon'),
     url(r'^add-to-amazon-cart/$', ListViews.addToAmazonCart, name='add-to-amazon-cart'),
+    url(r'^addtocart/$', CartViews.addtocart, name='addtocart'),
     url(r'^cart/$', CartViews.index, name='cart')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

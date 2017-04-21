@@ -11,7 +11,9 @@ def index(request):
 
 
 def addtocart(request):
+    print("INSIDE ADD TO CART")
     offerID = request.POST.GET('offerID')
+    print("INSIDE ADD TO CART")
     print("INCOMING OFFER ID:", offerID)
     item = {'offer_id': offerID, 'quantity': 1}
     if 'cartID' not in request.session or 'carthmac' not in request.session:

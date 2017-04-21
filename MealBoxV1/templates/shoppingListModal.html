@@ -45,7 +45,7 @@
                                 url: '{% url 'add-to-cart' %}',
                                 data: {
                                     csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                                    amazonOfferID: '{{ product.product_offer_id }}'
+                                    offerID: '{{ product.product_offer_id }}'
                                 }
                             });
                         });

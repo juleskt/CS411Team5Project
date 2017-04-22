@@ -18,7 +18,7 @@ def addtocart(request):
         ASIN = request.POST.get('ASIN')
         print("INCOMING OFFER ID:", offerID)
         print("INCOMING ASIN:", ASIN)
-        item = {'offer_id': offerID, 'quantity': 1}
+        item = {'offer_id': ASIN, 'quantity': 1}
 
         if request.session.get('cartID') is None or request.session.get('carthmac') is None:
             cart = amazon.cart_create(item)

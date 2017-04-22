@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from amazon.api import AmazonAPI
 from SecretConfigs import *
+#from cartsql import *
 
 amazon = AmazonAPI(SecretConfigs.awsAccessKey(), SecretConfigs.awsSecretKey(), SecretConfigs.awsAssociateTag())
 
@@ -39,3 +40,23 @@ def addtocart(request):
         return HttpResponse()
     else:
         return Http404()
+
+    # offerID = request.POST.get('offerID')
+    # ASIN = request.POST.get('ASIN')
+    # print("INCOMING OFFER ID:", offerID)
+    # print("INCOMING ASIN:", ASIN)
+    # item = {'offer_id': offerID, 'quantity': 1}
+    # if searchDBForCartID(request.session['user']['user_amazon_id']) is None:
+    #     cart = amazon.cart_create(item)
+    #     request.session['cartID'] = cart.cart_id
+    #     request.session['carthmac'] = cart.hmac
+    #     addCartID(cart.cart_id, request.session['user']['user_amazon_id'])
+    #     print(str(request.session['cartID']) + "cart" + str(request.session['carthmac']))
+    # else:
+    #     print("Success")
+    #     cart = amazon.cart_get(searchDBForCartID(request.session['user']['user_amazon_id']), request.session['carthmac'])
+    #     if item not in cart:
+    #         amazon.cart_add(item, request.session['cartID'], request.session['carthmac'])
+    #     print(str(request.session['cartID']) + "cart" + str(request.session['carthmac']))
+    # request.session.modified = True
+

@@ -93,7 +93,6 @@ def removeFromList(request):
         except:
             return index(request)
 
-
         return index(request)
 
     else:

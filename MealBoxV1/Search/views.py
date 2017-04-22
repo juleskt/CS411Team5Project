@@ -70,6 +70,7 @@ def search(request):
                 return render(request, 'searchResults.html', {'recipes': r.json()['recipes'], 'searchString': searchString})
     # if a GET (or any other method) we'll create a blank form
     else:
+        print("CART:", request.session['cartID'])
         # If the user has not logged in yet (cookie doesn't exist or we don't have a user session)
         if request.COOKIES.get('amazon_Login_state_cache', 'none') is 'none' or request.session.get('user') is None:
             return redirect('index')

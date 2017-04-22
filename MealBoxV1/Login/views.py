@@ -4,6 +4,8 @@ import requests
 import Search.forms as searchForms
 from django.db import connection, connections
 import json
+from django.contrib.auth.decorators import login_required
+from django.contrib import auth
 
 try:
     from StringIO import StringIO
@@ -69,6 +71,10 @@ def handleLogin(request):
         # Redirect via name given in MealBoxV1.urls
         return redirect('search')
 
+def handleLogout(request):
+    request.session.set_expiry(0)
+    request.session.flush()
+    return redirect('index')
 
 # Users_tbl
 # user_amazon id | user_name | email | zip_code | phone_number

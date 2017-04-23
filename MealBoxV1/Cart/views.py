@@ -79,12 +79,12 @@ def addtocart(request):
 
 def removefromcart(request):
     if request.method == 'POST':
-        #cartID = request.POST.get('cartID')
-        #cartHMAC = request.POST.get('carthmac')
+        print("got to remove from cart")
         cart = amazon.cart_get(request.session['cartID'], request.session['carthmac'])
         cartitemID = request.POST.get('cartitemID')
-        modify_item = {'cart_item_id': cartitemID, 'quantity': 0}
-        modified_cart = amazon.cart_modify(modify_item, cart.cart_id, cart.hmac)
+        print(cartitemID)
+        item = {'cart_item_id': cartitemID, 'quantity': 0}
+        modified_cart = amazon.cart_modify(item, cart.cart_id, cart.hmac)
         url = reverse('cart')
         return HttpResponseRedirect(url)
     else:

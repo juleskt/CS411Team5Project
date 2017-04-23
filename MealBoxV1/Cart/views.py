@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from amazon.api import AmazonAPI
 from SecretConfigs import *
 #from cartsql import *
@@ -9,9 +9,9 @@ amazon = AmazonAPI(SecretConfigs.awsAccessKey(), SecretConfigs.awsSecretKey(), S
 
 
 def index(request):
-    if request.session.get('cartID') is not None or request.session.get('carthmac') is not None:
-        purchaseURL = 'https://www.amazon.com/gp/cart/aws-merge.html?cart-id=' + str(request.session['cartID']) + '%26associate-id=' + str(SecretConfigs.awsAssociateTag()) + '%26hmac=' + str(request.session['carthmac']) + '%26AWSAccessKeyId=' + str(SecretConfigs.awsAccessKey())
-        cart = amazon.cart_get(request.session['cartID'], request.session['carthmac'])
+    if request.session.get('cartID') is not None or request.session.get('cartHMAC') is not None:
+        purchaseURL = 'https://www.amazon.com/gp/cart/aws-merge.html?cart-id=' + str(request.session['cartID']) + '%26associate-id=' + str(SecretConfigs.awsAssociateTag()) + '%26hmac=' + str(request.session['cartHMAC']) + '%26AWSAccessKeyId=' + str(SecretConfigs.awsAccessKey())
+        cart = amazon.cart_get(request.session['cartID'], request.session['cartHMAC'])
         cart_item_id = None
         for item in cart:
             cart_item_id = item.cart_item_id
@@ -79,7 +79,7 @@ def addtocart(request):
 def removefromcart(request):
     if request.method == 'POST':
         print("got to remove from cart")
-        cart = amazon.cart_get(request.session['cartID'], request.session['carthmac'])
+        cart = amazon.cart_get(request.session['cartID'], request.session['cartHMAC'])
         cart_item_id = request.POST.get('cart_item_id')
         item = {'cart_item_id': cart_item_id, 'quantity': 0}
         cart = amazon.cart_modify(item, cart.cart_id, cart.hmac)

@@ -8,8 +8,8 @@ amazon = AmazonAPI(SecretConfigs.awsAccessKey(), SecretConfigs.awsSecretKey(), S
 
 
 def index(request):
-    if request.session.get('cartID') is not None or request.session.get('carthmac') is not None:
-        purchaseURL = 'https://www.amazon.com/gp/cart/aws-merge.html?cart-id=' + str(request.session['cartID']) + '%26associate-id=' + str(SecretConfigs.awsAssociateTag()) + '%26hmac=' + str(request.session['carthmac']) + '%26AWSAccessKeyId=' + str(SecretConfigs.awsAccessKey())
+    if request.session.get('cartID') is not None or request.session.get('cartHMAC') is not None:
+        purchaseURL = 'https://www.amazon.com/gp/cart/aws-merge.html?cart-id=' + str(request.session['cartID']) + '%26associate-id=' + str(SecretConfigs.awsAssociateTag()) + '%26hmac=' + str(request.session['cartHMAC']) + '%26AWSAccessKeyId=' + str(SecretConfigs.awsAccessKey())
         return render(request, 'cart.html', {'purchase_url': purchaseURL})
 
 
@@ -19,24 +19,24 @@ def addtocart(request):
         ASIN = request.POST.get('ASIN')
         print("INCOMING OFFER ID:", offerID)
         print("INCOMING ASIN:", ASIN)
-        item = {'offer_id': ASIN, 'quantity': 1}
+        item = {'offer_id': offerID, 'quantity': 1}
 
-        if request.session.get('cartID') is None or request.session.get('carthmac') is None:
+        if request.session.get('cartID') is None or request.session.get('cartHMAC') is None:
             cart = amazon.cart_create(item)
 
             request.session['cartID'] = cart.cart_id
-            request.session['carthmac'] = cart.hmac
-            print(str(request.session['cartID']), "cart", str(request.session['carthmac']))
+            request.session['cartHMAC'] = cart.hmac
+            print(str(request.session['cartID']), "cart", str(request.session['cartHMAC']))
             print("MAKING CART")
         else:
-            cart = amazon.cart_get(request.session['cartID'], request.session['carthmac'])
+            cart = amazon.cart_get(request.session['cartID'], request.session['cartHMAC'])
             if item not in cart:
-                amazon.cart_add(item, request.session['cartID'], request.session['carthmac'])
-            print(str(request.session['cartID']), "cart", str(request.session['carthmac']))
+                amazon.cart_add(item, request.session['cartID'], request.session['cartHMAC'])
+            print(str(request.session['cartID']), "cart", str(request.session['cartHMAC']))
             print("ADDING TO CART")
 
         print("CART:", request.session['cartID'])
-        print("CART:", request.session['carthmac'])
+        print("CART:", request.session['cartHMAC'])
         return HttpResponse()
     else:
         return Http404()
@@ -49,14 +49,14 @@ def addtocart(request):
     # if searchDBForCartID(request.session['user']['user_amazon_id']) is None:
     #     cart = amazon.cart_create(item)
     #     request.session['cartID'] = cart.cart_id
-    #     request.session['carthmac'] = cart.hmac
+    #     request.session['cartHMAC'] = cart.hmac
     #     addCartID(cart.cart_id, request.session['user']['user_amazon_id'])
-    #     print(str(request.session['cartID']) + "cart" + str(request.session['carthmac']))
+    #     print(str(request.session['cartID']) + "cart" + str(request.session['cartHMAC']))
     # else:
     #     print("Success")
-    #     cart = amazon.cart_get(searchDBForCartID(request.session['user']['user_amazon_id']), request.session['carthmac'])
+    #     cart = amazon.cart_get(searchDBForCartID(request.session['user']['user_amazon_id']), request.session['cartHMAC'])
     #     if item not in cart:
-    #         amazon.cart_add(item, request.session['cartID'], request.session['carthmac'])
-    #     print(str(request.session['cartID']) + "cart" + str(request.session['carthmac']))
+    #         amazon.cart_add(item, request.session['cartID'], request.session['cartHMAC'])
+    #     print(str(request.session['cartID']) + "cart" + str(request.session['cartHMAC']))
     # request.session.modified = True
 

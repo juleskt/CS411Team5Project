@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect
 from .searchAndAddSql import *
 from .forms import ContactForm, SearchForm, SearchResult
 
+
 # add to your views
 def contact(request):
     form_class = ContactForm
@@ -25,9 +26,9 @@ def search(request):
         searchString = str(request.POST.get('search', None))
 
         # UnComment below and comment out everything else for test queries
-        #return render(request, 'searchResults.html', {'recipes': dummyQuery['recipes'], 'searchString': searchString})
+        # return render(request, 'searchResults.html', {'recipes': dummyQuery['recipes'], 'searchString': searchString})
 
-        #Check the DB for the cached result
+        # Check the DB for the cached result
         cacheResult = searchDBCacheForSearch(searchString)
 
         if cacheResult is None:
@@ -35,7 +36,8 @@ def search(request):
             print("NOT IN CACHE")
 
             # Hit the API:
-            r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
+            r = requests.get(
+                'http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
 
             if r.json()['count'] > 5:
                 insertSearchIntoDBCache(searchString, r.json())
@@ -45,7 +47,7 @@ def search(request):
 
         else:
             # We want the second element of tuple because it is the third row in the cache db
-            
+
             cachedDate = cacheResult[4]
             currentDate = datetime.today().date()
 
@@ -55,22 +57,26 @@ def search(request):
 
             if dateDelta.days < 7:
                 cacheResultDataColumn = json.loads(cacheResult[2])
-                return render(request, 'searchResults.html', {'recipes': cacheResultDataColumn['recipes'], 'searchString': searchString})
+                return render(request, 'searchResults.html',
+                              {'recipes': cacheResultDataColumn['recipes'], 'searchString': searchString})
 
             else:
                 # Hit the API:
-                r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
+                r = requests.get(
+                    'http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkKey() + '&q=' + searchString)
 
                 if r.json() is None:
-                    r = requests.get('http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkBackupKey() + '&q=' + searchString)
+                    r = requests.get(
+                        'http://food2fork.com/api/search?key=' + SecretConfigs.food2ForkBackupKey() + '&q=' + searchString)
 
                 if r.json()['count'] > 5:
                     updateSearchIntoDBCache(searchString, r.json())
-            
-                return render(request, 'searchResults.html', {'recipes': r.json()['recipes'], 'searchString': searchString})
+
+                return render(request, 'searchResults.html',
+                              {'recipes': r.json()['recipes'], 'searchString': searchString})
     # if a GET (or any other method) we'll create a blank form
     else:
-        print("CART:", request.session['cartID'])
+        #print("CART:", request.session['cartID'])
         # If the user has not logged in yet (cookie doesn't exist or we don't have a user session)
         if request.COOKIES.get('amazon_Login_state_cache', 'none') is 'none' or request.session.get('user') is None:
             return redirect('index')
@@ -118,6 +124,7 @@ def addRecipe(request):
     else:
         return Http404()
 
+
 def deleteRecipe(request):
     if request.method == 'POST':
         recipeID = request.POST.get('recipeID')
@@ -126,6 +133,7 @@ def deleteRecipe(request):
 
     else:
         return Http404()
+
 
 def getIngredientsFromF2FURL(ingreidentsURL):
     ingreidentsHTML = requests.get(ingreidentsURL).text
@@ -146,7 +154,7 @@ def getIngredientsFromF2FURL(ingreidentsURL):
         rawIngredients.append(ingredient.text)
 
         # Remove non letters from the string, but keep spaces
-        #parsedIngredients.append(''.join([i for i in ingredient.text if i.isalpha() or i is ' ']))
+        # parsedIngredients.append(''.join([i for i in ingredient.text if i.isalpha() or i is ' ']))
 
     for ingredient in rawIngredients:
         # Split the ingredient string by spaces

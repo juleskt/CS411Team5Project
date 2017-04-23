@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Search Results!</title>
+    <title>Cart</title>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
@@ -24,6 +24,55 @@
     <div id="navbar">
         {% include 'base.html' %}
     </div>
+
+    <div style='margin-bottom:15px; margin-top: 75px'>
+        <h1 class='title' style='width: 800px; margin: 0 auto'>
+            My Cart:
+        </h1>
+    </div>
+
+    {% for product in cartproducts %}
+    <div style='margin-bottom: 20px;'>
+        <div style='width: 800px; height: 172px; margin:0 auto; border: 1px solid black;' background-color=#FFFFFF;>
+            <div style='width:150px; float: left;'>
+                <img
+                    border="1"
+                    src={{ product.product_medium_image }}
+                    width="170" height="170"
+                />
+            </div>
+
+            <div style='width: 600px; height: 150px; float: right; margin-left: 20px;'>
+                <h4 class="title">
+                    <a>{{ product.product_title }}</a>
+                </h4>
+                <div>
+                    <h5> Price: {{ product.product_price }} </h5>
+                </div>
+                <div>
+                    <h5> From: {{ product.product_brand }} </h5>
+                </div>
+                <div class='dropup inline' style='float: left; margin-left:4px;'>
+                    <button type="submit" id="product-{{ product.product_asin }}" class="btn btn-danger btn-sm">Remove From Cart</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+        <script type="text/javascript">
+            $('#product-{{ product.cart_item_id }}').click(function(e) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'remove-from-cart' %}',
+                    data: {
+                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                        productasin: '{{ product.cart_item_id }}'
+                    }
+                });
+            });
+        </script>
+    {% endfor %}
 
     <a href="{{ purchase_url }}" class="btn btn-default" style="background-color:yellow;display:block;margin-top:22%;margin-bottom:0%">Proceed to Checkout</a>
 

@@ -23,10 +23,9 @@ def index(request):
                 "product_medium_image": ingredient.large_image_url,
                 "product_price":        ingredient.formatted_price,
                 "product_brand":        ingredient.brand,
-                "product_cartID":       item.cart_item_id,
+                "cart_item_id":         item.cart_item_id,
             }
             cartitems.append(dict)
-        print(dict)
         return render(request, 'cart.html', {'purchase_url': purchaseURL, 'cartproducts': cartitems})
 
 
@@ -81,10 +80,9 @@ def removefromcart(request):
     if request.method == 'POST':
         print("got to remove from cart")
         cart = amazon.cart_get(request.session['cartID'], request.session['carthmac'])
-        cartitemID = request.POST.get('cartitemID')
-        print(cartitemID)
-        item = {'cart_item_id': cartitemID, 'quantity': 0}
-        modified_cart = amazon.cart_modify(item, cart.cart_id, cart.hmac)
+        cart_item_id = request.POST.get('cart_item_id')
+        item = {'cart_item_id': cart_item_id, 'quantity': 0}
+        cart = amazon.cart_modify(item, cart.cart_id, cart.hmac)
         url = reverse('cart')
         return HttpResponseRedirect(url)
     else:

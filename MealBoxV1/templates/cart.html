@@ -53,7 +53,7 @@
                     <h5> From: {{ product.product_brand }} </h5>
                 </div>
                 <div class='dropup inline' style='float: left; margin-left:4px;'>
-                    <button type="submit" id="product-{{ product.cart_item_id }}" class="btn btn-danger btn-sm">Remove From Cart</button>
+                    <button type="submit" id="product-{{ product.product_asin }}" class="btn btn-danger btn-sm">Remove From Cart</button>
                 </div>
 
             </div>
@@ -67,7 +67,7 @@
                     url: '{% url 'remove-from-cart' %}',
                     data: {
                         csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                        cartitemID: '{{ product.cart_item_id }}'
+                        productasin: '{{ product.cart_item_id }}'
                     }
                 });
             });

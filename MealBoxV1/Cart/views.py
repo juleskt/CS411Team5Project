@@ -27,7 +27,10 @@ def index(request):
                 "cart_item_id":         item.cart_item_id,
             }
             cartitems.append(dict)
-        return render(request, 'cart.html', {'purchase_url': purchaseURL, 'cartproducts': cartitems})
+        if len(cartitems) == 0:
+            return render(request, 'emptycart.html', {})
+        else:
+            return render(request, 'cart.html', {'purchase_url': purchaseURL, 'cartproducts': cartitems})
 
 
 def addtocart(request):

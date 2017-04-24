@@ -57,6 +57,7 @@ urlpatterns = [
     url(r'^add-to-amazon-cart/$', ListViews.addToAmazonCart, name='add-to-amazon-cart'),
     url(r'^addtocart/$', CartViews.addtocart, name='add-to-cart'),
     url(r'^remove-from-cart/$', CartViews.removefromcart, name='remove-from-cart'),
+    url(r'^clear-cart/$', CartViews.clearcart, name='clear-cart'),
     url(r'^cart/$', CartViews.index, name='cart'),
 
     #url(r'^session-test/$', session_test_1),

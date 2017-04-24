@@ -76,6 +76,17 @@
 
     <a href="{{ purchase_url }}" class="btn btn-default" style="background-color:yellow;display:block;margin-top:22%;margin-bottom:0%">Proceed to Checkout</a>
 
+    <button type="submit" id="clear-cart" class="btn btn-danger btn-sm">Clear Cart</button>
+
+    <script type="text/javascript">
+            $('#clear-cart').click(function(e) {
+                $.ajax({
+                    url: '{% url 'clear-cart' %}',
+                });
+            });
+    </script>
+
+
 
 </body>
     {% include 'footer.html' %}

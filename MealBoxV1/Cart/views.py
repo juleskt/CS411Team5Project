@@ -78,9 +78,7 @@ def addtocart(request):
     # request.session.modified = True
 
 def removefromcart(request):
-    print("here")
     if request.method == 'POST':
-        print("got to remove from cart")
         cart = amazon.cart_get(request.session['cartID'], request.session['carthmac'])
         cart_item_id = request.POST.get('cart_item_id')
         modify_item = {'cart_item_id': cart_item_id, 'quantity': 0}
@@ -92,5 +90,6 @@ def removefromcart(request):
 
 
 def clearcart(request):
+    print("made it to clearcart")
     return amazon.cart_clear(request.session['cartID'], request.session['carthmac'])
 

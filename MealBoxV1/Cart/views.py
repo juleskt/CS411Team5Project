@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from amazon.api import AmazonAPI
 from SecretConfigs import *
-from cartsql import addCartID
+from .cartsql import addCartID, addCartHMAC
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 

@@ -84,6 +84,11 @@
                     data: {
                         csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
                         recipeID: '{{ recipe.recipe_id }}'
+                    },
+                    success: function(response) {
+                        $(document).ready(function() {
+                            location.reload(true);
+                        });
                     }
                 });
             });

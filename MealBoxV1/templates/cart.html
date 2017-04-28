@@ -70,7 +70,13 @@
                     data: {
                         csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
                         cart_item_id: '{{ product.cart_item_id }}'
+                    },
+                    success: function(response) {
+                        $(document).ready(function() {
+                            location.reload(true);
+                        });
                     }
+
                 });
             });
         </script>
@@ -84,11 +90,14 @@
             $('#clear-cart').click(function(e) {
                 $.ajax({
                     url: '{% url 'clear-cart' %}',
+                     success: function(response) {
+                        $(document).ready(function() {
+                            location.reload(true);
+                        });
+                    }
                 });
             });
     </script>
-
-
 
 </body>
     {% include 'footer.html' %}

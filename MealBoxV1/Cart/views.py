@@ -50,8 +50,8 @@ def addtocart(request):
 
             request.session['cartID'] = cart.cart_id
             request.session['cartHMAC'] = cart.hmac
-            addCartID(cart.cart_id,request.session['user']['user_amazon_id'])
-            addCartHMAC(cart.hmac,request.session['user']['user_amazon_id'])
+            addCartID(cart.cart_id, request.session['user']['user_amazon_id'])
+            addCartHMAC(cart.hmac, request.session['user']['user_amazon_id'])
             print(str(request.session['cartID']), "cart", str(request.session['cartHMAC']))
 
             print("MAKING CART")

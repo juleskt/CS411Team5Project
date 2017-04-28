@@ -97,6 +97,11 @@
                                             data: {
                                                 csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
                                                 recipeID: '{{ ingredients.0.recipe_id }}'
+                                            },
+                                            success: function(response) {
+                                                $(document).ready(function() {
+                                                    location.reload(true);
+                                                });
                                             }
                                          });
                                     });

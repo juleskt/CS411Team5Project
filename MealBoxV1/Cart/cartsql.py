@@ -11,7 +11,7 @@ def addCartID(cartID,userID):
 """, (cartID,userID))
 
 
-def addCartID(cartHMAC,userID):
+def addCartHMAC(cartHMAC,userID):
     cursor = connections['users'].cursor()
     result = cursor.execute ("""
       UPDATE Users_tbl

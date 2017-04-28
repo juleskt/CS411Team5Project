@@ -43,13 +43,13 @@
 
             <div style='width: 600px; height: 150px; float: right; margin-left: 20px;'>
                 <h4 class="title">
-                    <a href='{{ recipe.source_url }}'>{{ recipe.title }}</a>
+                    <a href='{{ recipe.source_url }}' target="_blank">{{ recipe.title }}</a>
                 </h4>
                 <div>
-                    From: <a href='{{ recipe.publisher_url }}'>{{ recipe.publisher }}</a>
+                    From: <a href='{{ recipe.publisher_url }}' target="_blank">{{ recipe.publisher }}</a>
                 </div>
                 <div>
-                    <a href='{{ recipe.f2f_url }}'> View Recipe </a>
+                    <a href='{{ recipe.f2f_url }}' target="_blank"> View Recipe </a>
                 </div>
                 <div>
                     <h5>Social Rank: {{ recipe.social_rank }}</h5>
@@ -107,7 +107,6 @@
         </script>
 
     {% endfor %}
-
 
 {% include 'footer.html' %}
 </body>

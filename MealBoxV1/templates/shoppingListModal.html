@@ -47,7 +47,13 @@
                                     csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
                                     offerID: '{{ product.product_offer_id }}',
                                     ASIN: '{{ product.product_asin}}'
+                                },
+                                success: function(response) {
+                                    $(document).ready(function() {
+                                        $('#add-to-cart-offer-id-{{ product.product_asin }}').removeClass('btn btn-primary btn btn-sm').addClass('btn btn-success btn-sm');
+                                    });
                                 }
+
                             });
                         });
                     </script>

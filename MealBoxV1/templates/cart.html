@@ -87,16 +87,16 @@
     <button type="submit" id="clear-cart" style="margin:auto;display:block;margin-top:1%;margin-bottom:1%" class="btn btn-danger btn-sm">Clear Cart</button>
 
     <script type="text/javascript">
-            $('#clear-cart').click(function(e) {
-                $.ajax({
-                    url: '{% url 'clear-cart' %}',
-                     success: function(response) {
-                        $(document).ready(function() {
-                            location.reload(true);
-                        });
-                    }
-                });
+        $('#clear-cart').click(function(e) {
+            $.ajax({
+                url: '{% url 'clear-cart' %}',
+                 success: function(response) {
+                    $(document).ready(function() {
+                        location.reload(true);
+                    });
+                }
             });
+        });
     </script>
 
 </body>

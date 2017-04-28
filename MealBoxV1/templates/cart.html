@@ -53,7 +53,7 @@
                     <h5> From: {{ product.product_brand }} </h5>
                 </div>
                 <div class='dropup inline' style='float: left; margin-left:4px;'>
-                    <button type="submit" id="product-{{ product.product_asin }}" class="btn btn-danger btn-sm">Remove From Cart</button>
+                    <button type="submit" id="product-{{ product.cart_item_id }}" class="btn btn-danger btn-sm">Remove From Cart</button>
                 </div>
 
             </div>
@@ -67,14 +67,25 @@
                     url: '{% url 'remove-from-cart' %}',
                     data: {
                         csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                        productasin: '{{ product.cart_item_id }}'
+                        cart_item_id: '{{ product.cart_item_id }}'
                     }
                 });
             });
         </script>
     {% endfor %}
 
-    <a href="{{ purchase_url }}" class="btn btn-default" style="background-color:yellow;display:block;margin-top:22%;margin-bottom:0%">Proceed to Checkout</a>
+    <a href="{{ purchase_url }}" class="btn btn-primary btn-lg" style="margin:auto;display:block;margin-top:2%;margin-bottom:0%;width:200px">Proceed to Checkout</a>
+
+    <button type="submit" id="clear-cart" style="margin:auto;display:block;margin-top:1%;margin-bottom:1%" class="btn btn-danger btn-sm">Clear Cart</button>
+
+    <script type="text/javascript">
+            $('#clear-cart').click(function(e) {
+                $.ajax({
+                    url: '{% url 'clear-cart' %}',
+                });
+            });
+    </script>
+
 
 
 </body>

@@ -1,9 +1,13 @@
 from django.shortcuts import render
+<<<<<<< HEAD
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+=======
+>>>>>>> alexDev
 from amazon.api import AmazonAPI
 from SecretConfigs import *
 #from cartsql import *
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 
 amazon = AmazonAPI(SecretConfigs.awsAccessKey(), SecretConfigs.awsSecretKey(), SecretConfigs.awsAssociateTag())
 
@@ -17,6 +21,7 @@ def index(request):
             cart_item_id = item.cart_item_id
         cartitems = []
         for item in cart:
+            print(item.cart_item_id)
             ingredient = amazon.lookup(ItemId=item.asin)
             dict = {
                 "product_title":        ingredient.title,
@@ -26,7 +31,10 @@ def index(request):
                 "cart_item_id":         item.cart_item_id,
             }
             cartitems.append(dict)
-        return render(request, 'cart.html', {'purchase_url': purchaseURL, 'cartproducts': cartitems})
+        if len(cartitems) == 0:
+            return render(request, 'emptycart.html', {})
+        else:
+            return render(request, 'cart.html', {'purchase_url': purchaseURL, 'cartproducts': cartitems})
 
 
 def addtocart(request):
@@ -78,11 +86,10 @@ def addtocart(request):
 
 def removefromcart(request):
     if request.method == 'POST':
-        print("got to remove from cart")
-        cart = amazon.cart_get(request.session['cartID'], request.session['cartHMAC'])
+        cart = amazon.cart_get(request.session['cartID'], request.session['carthmac'])
         cart_item_id = request.POST.get('cart_item_id')
-        item = {'cart_item_id': cart_item_id, 'quantity': 0}
-        cart = amazon.cart_modify(item, cart.cart_id, cart.hmac)
+        modify_item = {'cart_item_id': cart_item_id, 'quantity': 0}
+        cart = amazon.cart_modify(modify_item, cart.cart_id, cart.hmac)
         url = reverse('cart')
         return HttpResponseRedirect(url)
     else:
@@ -90,5 +97,6 @@ def removefromcart(request):
 
 
 def clearcart(request):
+    print("made it to clearcart")
     return amazon.cart_clear(request.session['cartID'], request.session['carthmac'])
 

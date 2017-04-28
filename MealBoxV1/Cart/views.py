@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from amazon.api import AmazonAPI
 from SecretConfigs import *
-#from cartsql import *
+from cartsql import addCartID
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 
@@ -24,6 +24,7 @@ def index(request):
                 "product_medium_image": ingredient.large_image_url,
                 "product_price":        ingredient.formatted_price,
                 "product_brand":        ingredient.brand,
+                "product_url":          ingredient.detail_page_url,
                 "cart_item_id":         item.cart_item_id,
             }
             cartitems.append(dict)
@@ -46,6 +47,8 @@ def addtocart(request):
 
             request.session['cartID'] = cart.cart_id
             request.session['carthmac'] = cart.hmac
+            addCartID(cart.cart_id,request.session['user']['user_amazon_id'])
+            addCartHMAC(cart.hmac,request.session['user']['user_amazon_id'])
             print(str(request.session['cartID']), "cart", str(request.session['carthmac']))
             print("MAKING CART")
         else:

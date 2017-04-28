@@ -6,6 +6,7 @@ from django.db import connection, connections
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
+from Cart.cartsql import searchDBForCartHMAC, searchDBForCartID
 
 try:
     from StringIO import StringIO
@@ -68,6 +69,9 @@ def handleLogin(request):
 
         request.session['amazonLoginCache'] = request.COOKIES.get('amazon_Login_state_cache')
 
+        if searchDBForCartID(request.session['user']['user_amazon_id']) is not None and searchDBForCartHMAC(request.session['user']['user_amazon_id']) is not None:
+            request.session['cartID'] = searchDBForCartID(request.session['user']['user_amazon_id'])
+            request.session['carthmac'] = searchDBForCartHMAC(request.session['user']['user_amazon_id'])
         # Redirect via name given in MealBoxV1.urls
         return redirect('search')
 

@@ -35,16 +35,18 @@
     <div style='margin-bottom: 20px;'>
         <div style='width: 800px; height: 172px; margin:0 auto; border: 1px solid black;' background-color=#FFFFFF;>
             <div style='width:150px; float: left;'>
-                <img
-                    border="1"
-                    src={{ product.product_medium_image }}
-                    width="170" height="170"
-                />
+                <a href="{{ product.product_url }}" target="_blank">
+                    <img
+                        border="1"
+                        src={{ product.product_medium_image }}
+                        width="170" height="170"
+                    />
+                </a>
             </div>
 
             <div style='width: 600px; height: 150px; float: right; margin-left: 20px;'>
                 <h4 class="title">
-                    <a>{{ product.product_title }}</a>
+                    <a href="{{ product.product_url }}" target="_blank">{{ product.product_title }}</a>
                 </h4>
                 <div>
                     <h5> Price: {{ product.product_price }} </h5>

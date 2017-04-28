@@ -3,10 +3,10 @@ First Step:
 User clicks on their saved recipes and it will bring up a list of all of the recipes that the user has saved in the user database.
 
 Second Step:
-User clicks on the recipe that they wish to prepare and the app will pull up a recipe with all the ingredients needed for that recipe.
+User clicks on "add to shopping list" below the recipe that they wish to prepare and the recipe and its ingredients will be shown under shopping list tap
 
 Third Step:
-The user then clicks on all of the ingredients that they need to purchase and the app will display the top five options on Amazon for each ingredient that is needed.
+The user then clicks on each of the ingredients that they need to purchase and the app will display the top five options on Amazon for each ingredient that is needed.
 
 Fourth Step:
 The user chooses the option for each ingredient from Amazon and it adds that ingredient to the cart.

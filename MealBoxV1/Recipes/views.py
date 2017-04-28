@@ -42,5 +42,3 @@ def deleteRecipe(request):
 
     else:
         return Http404()
-
-

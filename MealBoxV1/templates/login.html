@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    {% load static %}
+
+    {# Load the tag library #}
+    {% load bootstrap3 %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
 </head>
-<body>
+ <link rel="stylesheet" type="text/css" href="{% static 'css/searchstyle.css' %}">
+<body id='bg' style='background-image: url(' {% static 'css/searchstyle.css' %} ')'>
+    <center>
+        <p>
+            <img src="{% static 'img/logo.png' %}" style = 'width: 250px; height:100px; position: absolute; top:250px; left: 250px'>
+        </p>
+
+        <font face='verdana' color="white" style='position: absolute; top:370px; left: 130px'>
+            <b>
+                Hi! Welcome to MealBox. Please login with your Amazon account below
+            </b>
+        </font>
+    </center>
 
     <div id="amazon-root"></div>
 
@@ -26,7 +50,7 @@
         <img
             border="0" alt="Login with Amazon"
             src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
-            width="156" height="32"
+            width="156" height="32"; style = 'position: absolute; top:400px; left: 300px'
         />
     </a>
 
@@ -37,20 +61,5 @@
             return false;
         };
     </script>
-
-    <a href="#" id="Logout">
-        <img
-            border="0" alt="Logout"
-            src="http://www.clker.com/cliparts/H/1/c/C/6/F/gray-login-thin-button-hi.png"
-            width="156" height="32"
-        />
-    </a>
-
-    <script type="text/javascript">
-        document.getElementById('Logout').onclick = function() {
-          amazon.Login.logout();
-        };
-    </script>
-
 </body>
 </html>

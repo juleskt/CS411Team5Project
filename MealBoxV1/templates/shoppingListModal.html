@@ -42,10 +42,11 @@
                         $('#add-to-cart-offer-id-{{ product.product_asin }}').click(function(e) {
                             $.ajax({
                                 type: 'POST',
-                                url: '{% url 'add-to-amazon-cart' %}',
+                                url: '{% url 'add-to-cart' %}',
                                 data: {
                                     csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                                    amazonOfferID: '{{ product.product_offer_id }}'
+                                    offerID: '{{ product.product_offer_id }}',
+                                    ASIN: '{{ product.product_asin}}'
                                 }
                             });
                         });

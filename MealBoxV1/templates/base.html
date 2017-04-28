@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <div style='position:fixed; top: 0; width: 100%; z-index: 99'>
     <div class="navbar navbar-inverse" id="myNavbar">
         <div class="navbar-header">
@@ -32,7 +31,7 @@
                <a href='{% url 'cart' %}'>Cart</a>
             </li>
             <li>
-                <a id="Logout" href="https://mealbox.pythonanywhere.com">
+                <a id="Logout" href="https://mealbox.pythonanywhere.com" style="margin-right: 10px;">
                     <span class="glyphicon glyphicon-log-in"></span>
                     Logout
                 </a>
@@ -40,3 +39,29 @@
         </ul>
     </div>
 </div>
+
+ <div id="amazon-root"></div>
+ <script type="text/javascript">
+
+    window.onAmazonLoginReady = function() {
+        amazon.Login.setClientId('amzn1.application-oa2-client.3841a328796f48d48add98af3e1bd6fa');
+    };
+
+    (function(d) {
+        var a = d.createElement('script'); a.type = 'text/javascript';
+        a.async = true; a.id = 'amazon-login-sdk';
+        a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+        d.getElementById('amazon-root').appendChild(a);
+    }) (document);
+</script>
+
+<script type="text/javascript">
+    document.getElementById('Logout').onclick = function() {
+      amazon.Login.logout();
+    };
+
+    $.ajax({
+        type: 'GET',
+        url: '{% url 'logout' %}'
+    })
+</script>

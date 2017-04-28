@@ -33,7 +33,7 @@ def getAmazonResultsForModal(request):
         ingredient = request.POST.get('ingredientName')
 
         amazon = AmazonAPI(SecretConfigs.awsAccessKey(), SecretConfigs.awsSecretKey(), SecretConfigs.awsAssociateTag())
-        products = amazon.search(Keywords=ingredient, SearchIndex='All')#, ItemPage ='1')
+        products = amazon.search_n(10, Keywords=ingredient, SearchIndex='GourmetFood')#, ItemPage ='1')
 
         jsonProducts = []
         #jsonProducts['ingredient_name'] = ingredient
@@ -41,19 +41,20 @@ def getAmazonResultsForModal(request):
 
         try:
             for i, product in enumerate(products):
-                productData['result_number'] = i
-                productData['product_title'] = product.title
-                productData['product_asin'] = product.asin
-                productData['product_medium_image'] = product.large_image_url
-                productData['product_list_price'] = str(product.list_price)
-                productData['product_brand'] = product.brand
-                productData['product_formatted_price'] = product.formatted_price
-                productData['detail_page_url'] = product.detail_page_url
-                productData['product_offer_id'] = product.offer_id
-                productData['product_reviews'] = product.reviews[1]
+                if product.offer_id is not None:
+                    productData['result_number'] = i
+                    productData['product_title'] = product.title
+                    productData['product_asin'] = product.asin
+                    productData['product_medium_image'] = product.large_image_url
+                    productData['product_list_price'] = str(product.list_price)
+                    productData['product_brand'] = product.brand
+                    productData['product_formatted_price'] = product.formatted_price
+                    productData['detail_page_url'] = product.detail_page_url
+                    productData['product_offer_id'] = product.offer_id
+                    productData['product_reviews'] = product.reviews[1]
 
-                jsonProducts.append(productData)
-                productData = {}
+                    jsonProducts.append(productData)
+                    productData = {}
 
             jsonWrapper = {}
             jsonWrapper['products'] = jsonProducts
@@ -92,7 +93,6 @@ def removeFromList(request):
                 print("Shopping list after remove:", request.session['shopping_list'])
         except:
             return index(request)
-
 
         return index(request)
 

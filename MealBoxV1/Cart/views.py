@@ -1,8 +1,5 @@
 from django.shortcuts import render
-<<<<<<< HEAD
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-=======
->>>>>>> alexDev
 from amazon.api import AmazonAPI
 from SecretConfigs import *
 #from cartsql import *

@@ -90,7 +90,14 @@
                         recipeDirections: '{{ recipe.source_url }}',
                         recipeIngredientsUrl: '{{ recipe.f2f_url }}',
                         recipeImageUrl: '{{ recipe.image_url }}'
+                    },
+                    success: function(response) {
+                        $(document).ready(function() {
+                            $('#recipes-{{ recipe.recipe_id }}').removeClass('btn btn-primary btn-sm').addClass('btn btn-success btn-sm');
+                            $('#recipes-{{ recipe.recipe_id }}').text('Added to recipes!');
+                        });
                     }
+
                 });
             });
 

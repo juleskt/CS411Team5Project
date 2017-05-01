@@ -100,6 +100,12 @@
                     data: {
                         csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
                         recipeID: '{{ recipe.recipe_id }}'
+                    },
+                    success: function(response) {
+                        $(document).ready(function() {
+                            $('#shopping-list-{{ recipe.recipe_id }}').removeClass('btn btn-primary btn-sm').addClass('btn btn-success btn-sm');
+                            $('#shopping-list-{{ recipe.recipe_id }}').text('Added to shopping list!');
+                        });
                     }
                 });
             });

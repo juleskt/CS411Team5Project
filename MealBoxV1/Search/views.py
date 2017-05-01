@@ -103,25 +103,28 @@ def addRecipe(request):
         if not searchDBForSavedRecipe(recipeID, request.session['user']['user_amazon_id']):
             addSavedRecipeForUser(recipeID, request.session['user']['user_amazon_id'])
 
-        # Get a dictionary for ingredients and directions from the URL
-        ingredientsDict = getIngredientsFromF2FURL(recipeIngredientsUrl)
-        ingredients = ingredientsDict['ingredients']
-        rawIngredientsAndDescription = ingredientsDict['rawIngredients']
+        try:
+            # Get a dictionary for ingredients and directions from the URL
+            ingredientsDict = getIngredientsFromF2FURL(recipeIngredientsUrl)
+            ingredients = ingredientsDict['ingredients']
+            rawIngredientsAndDescription = ingredientsDict['rawIngredients']
 
-        # Loop through two lists at the same time
-        for ingredient, rawDescription in zip(ingredients, rawIngredientsAndDescription):
-            savedIngredient = searchDBForSavedIngredient(ingredient)
-
-            if not savedIngredient:
-                addIngredientToDB(ingredient)
+            # Loop through two lists at the same time
+            for ingredient, rawDescription in zip(ingredients, rawIngredientsAndDescription):
                 savedIngredient = searchDBForSavedIngredient(ingredient)
 
-            addIngredientToRecipe(recipeID, savedIngredient[0]['ingredient_id'], rawDescription)
+                if not savedIngredient:
+                    addIngredientToDB(ingredient)
+                    savedIngredient = searchDBForSavedIngredient(ingredient)
 
-        return HttpResponse()
+                addIngredientToRecipe(recipeID, savedIngredient[0]['ingredient_id'], rawDescription)
 
+            return HttpResponse()
+
+        except:
+            return HttpResponse()
     else:
-        return Http404()
+        return HttpResponse()
 
 
 def deleteRecipe(request):

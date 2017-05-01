@@ -71,7 +71,7 @@ def handleLogin(request):
 
         if searchDBForCartID(request.session['user']['user_amazon_id']) is not None and searchDBForCartHMAC(request.session['user']['user_amazon_id']) is not None:
             request.session['cartID'] = searchDBForCartID(request.session['user']['user_amazon_id'])
-            request.session['carthmac'] = searchDBForCartHMAC(request.session['user']['user_amazon_id'])
+            request.session['cartHMAC'] = searchDBForCartHMAC(request.session['user']['user_amazon_id'])
         # Redirect via name given in MealBoxV1.urls
         return redirect('search')
 

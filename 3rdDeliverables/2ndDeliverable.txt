@@ -1,0 +1,36 @@
+Yilin Feng
+Wei Ji
+Alex McDaniel
+Julian Trinh
+
+MealBox User Stories
+
+User Story 1
+“Access, account creation, and log in”
+
+When a user first lands on the MealBox page, they will be prompted to login through Amazon to continue, much like Facebook’s landing page. Once logged in and authenticated (through Amazon), a user will be able to access full website functionality and begin searching recipes. If a user has already logged in with Amazon at an earlier point and returns to the page, they will not have to log in.
+
+User Story 2
+“As a logged-in user, I want to search and save for recipes for specific food I want to make so that I know what ingredients I need”
+
+A user can search for recipes by typing the keywords of the food they want to make in the search bar and click on search. Next, the found recipes will be displayed on the main screen under the search bar. “No recipe matched” will be displayed if there is no matching recipe found by the system. The maximum number of recipes displayed will be no more than 5. By default, the top 3 are the most popular ones and the other 2 are the most “fresh” ones, determined by the system’s score. Alternatively, a user can choose a category to display (Popularity vs. “Freshness”). If a category is chosen, the 5 results will be maximized by the chosen feature. By clicking on each recipe, a tooltip will appear near the icon displaying the ingredients for the recipe and the link for the instructions to cook it. The user can save the recipe by clicking on the “save” button on the recipe ingredient screen. 
+
+User Story 3 (Secondary)
+“As a logged-in user, I want to be able to save and view recipes into meal categories for easy re-use.”
+
+On MealBox’s main page, users will have the option of creating “Meals” with names as a means of organizing saved recipes. A user will be able to move saved recipes into a “Meal” for ease of access. For example, after making a Meal called “Thanksgiving”, one can move recipes for turkey, mashed potatoes, and stuffing into it. Additionally, users can save recipes directly into a Meal from the recipe ingredient screen. A user will be able to view their Meals and ingredients by pressing a button on the main page called Meals and Ingredients.
+
+Pivot: Unfortunately we did not have enough time before the deadline to implement the Meals page. We still have the Meals button in our navigation bar, however for now it just redirects the user to our homepage.
+
+
+User Story 4 (Secondary)
+“As a logged-in user, I want to be able to take notes on recipes that I have made so that I can remember if I want to make any changes.”
+
+In the user’s saved “Meals” or recipes, they will have the option to add notes if they select to do so. This will allow the user to make any wanted changes the next time that they make the meal or dish. For example, if a user wants to add more salt the next time they make a specific dish, they can add that to the notes section so that they will be able to make the necessary change the next time that they make the recipe. The notes will be shown below the saved recipes and meals.
+
+Pivot: We also were not able to implement the notes with the allotted time. We have a notes section for each recipe in our database and the notes currently being shown next to each recipe are pulled from the database, so moving forward we could implement it by taking a user input and inserting it into the database.
+
+User Story 5
+“As a logged-in user, I want to get a shopping list of all the ingredients I need so that I won’t have to make multiple purchases”
+
+A user can get a customized shopping list for all ingredients he/she needs for a certain meal or recipe by clicking on “Shopping List” button near that particular meal or recipe. Users will be directed to another screen which displays all the saved recipes and their ingredients for that meal. Then, the user is able to decide whether or not they want to buy the ingredients from Amazon by clicking on “Shop on Amazon”. After clicking this button, user will be able to browse the top 5 Amazon products for that ingredient (i.e: top 5 sugars on Amazon) and choose the one that they want. The chosen items will be added to their Amazon cart. The 5 product options are determined by the highest overall Amazon ratings and general sentiment of reviews will also be shown. Users can leave the website in the middle of the process and their product choices will be saved. When they come back, they can pick up where they had left off. After the user selects products from the ingredients list, a finalized Amazon shopping list is generated with a display of all Amazon items in the cart. Users can delete any item from the list by simply clicking on the item itself and select remove. The user will then be directed to Amazon.com to complete the purchase. Optionally, if the user does not want to shop on Amazon, they can print out the ingredient and product list.

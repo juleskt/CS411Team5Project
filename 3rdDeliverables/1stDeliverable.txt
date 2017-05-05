@@ -1,0 +1,16 @@
+Idea No.1: Recipe ingredients’ search for nearby markets
+
+Idea No.2: Finding event of interests and pushing notification
+
+Idea No.3: Generate mood and word cloud out of Amazon reviews, tweets, etc.
+
+Alternatives:
+1. Online grouping for coupons
+2. Finding wait time for restaurants
+
+
+No.1 Overview
+This application will help you quickly access recipes and  display all your needed ingredients as well as where to get them at nearby market locations. The application has two main functional aspects. First, by searching for specific food you want to make, the application will return the top recipes for the item. Then based on the ingredients list on the chosen recipe, you can select which ingredients you want to acquire. After this step, the app will go through each nearby market and displays the closest ones with your ingredients in storage, along with their price. The lookup may be optimized for distance and/or price. This application greatly solves people’s issues with not being sure where to find certain ingredients or wanting to quickly access all ingredients without too much trouble. Have you ever wondered about which shop is the closest that gets all your ingredients? Or have you ever travelled somewhere and planned to cook but didn’t know which shop you should go? Then this is the app for you. With this app, you can be 100% sure if a nearby shop has what you want available. So now it comes to the idea processes part. In order to accomplish this application, we will be interacting with the supermarket APIs which gets us the product and inventory info as we need. Another API would be the recipe data set that gets all the necessary ingredients. Users can log in to the app through certain media accounts and their information will be stored to the application’s own database. Also, users will be able to search, save, update and delete those recipes.
+
+No.2 Overview
+Our second idea is an event application that finds interesting nearby events based on users’ preferences. The application can be potentially linked to Facebook, Linkedin, Twitter or Instagram accounts to gather basic information about the users. After registering the account, users would be able to select their regions of interests and associated event categories preferences. Event finding metrics could be implemented in order to find the best of interesting events for the users. One additional benefit our application will offer is the ability to receive push notifications of the upcoming events. The application itself will run the searches every several hours in background. If there are new matching events, the app will notify the users so they don’t have to always manually check. The APIs involved are events API and the social media API. Google Maps is also used to provide us the distance of the events and the geographical representation of the events for the user. The users will be able to search, save and delete those events to their liking.
